@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "698cbb276ebd2a4c",
+        "id": "b9354fa7d5dde57f",
         "type": "tabs",
         "children": [
           {
-            "id": "0024daa57141ee48",
+            "id": "aca906dd5af166aa",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "posts/expressive-code.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "expressive-code"
+              "title": "Tab mới"
             }
           }
         ]
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "posts/expressive-code.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Liên kết đến của expressive-code"
+              "title": "Liên kết đến"
             }
           },
           {
@@ -113,12 +108,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "posts/expressive-code.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Liên kết đi ra từ expressive-code"
+              "title": "Liên kết đi ra"
             }
           },
           {
@@ -142,13 +136,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "posts/expressive-code.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Đề cương của expressive-code"
+              "title": "Đề cương"
             }
           }
         ]
@@ -169,10 +162,22 @@
       "bases:Create new base": false
     }
   },
-  "active": "0024daa57141ee48",
+  "active": "aca906dd5af166aa",
   "lastOpenFiles": [
-    "posts/draft.md",
+    "posts/civil3d/tao-corridor-tu-alignment-va-assembly-bang-dynamo-civil3d/index.md",
+    "posts/civil3d/tao-corridor-tu-alignment-va-assembly-bang-dynamo-civil3d/guide2.png",
+    "posts/civil3d/index.md",
+    "posts/civil3d/tao-corridor-tu-alignment-va-assembly-bang-dynamo-civil3d/guide.png",
+    "posts/civil3d/tao-corridor-tu-alignment-va-assembly-bang-dynamo-civil3d/banner-dynamo.png",
+    "posts/civil3d/cover.jpeg",
+    "posts/civil3d/tao-corridor-tu-alignment-va-assembly-bang-dynamo-civil3d",
+    "posts/civil3d/index copy.md",
     "posts/guide/index.md",
-    "posts/guide/cover.jpeg"
+    "posts/civil3d",
+    "posts/civil3đ",
+    "posts/guide/cover.jpeg",
+    "posts/draft.md",
+    "posts/expressive-code.md",
+    "posts/github.md"
   ]
 }
