@@ -90,11 +90,11 @@ Chạy script Dynamo để tự động tạo Corridor dựa trên các số li�
 
   
 
-Việc tự động hóa việc tạo Corridor bằng Dynamo Civil 3D với Camber và Civil3DToolkit giúp hợp lý hóa quy trình thiết kế, nâng cao năng suất và cải thiện kết quả dự án. Bằng cách thực hiện theo các bước này, các kỹ sư xây dựng và nhà thiết kế có thể mô hình hóa hiệu quả các tuyến đường và dự án tuyến tính, tận dụng các khả năng tự động hóa tiên tiến.
+Việc tự động hóa việc tạo Corridor bằng Dynamo Civil 3D với Camber và Civil 3D Toolkit giúp hợp lý hóa quy trình thiết kế, nâng cao năng suất và cải thiện kết quả dự án. Bằng cách thực hiện theo các bước này, các kỹ sư xây dựng và nhà thiết kế có thể mô hình hóa hiệu quả các tuyến đường và dự án tuyến tính, tận dụng các khả năng tự động hóa tiên tiến.
 
   
 
-Xem trang chủ để biết thêm nhiều thông tin: [Boo Space Blog](https:boospace.blog)
+Xem trang chủ để biết thêm nhiều thông tin: [Boo Space](https://boospace.tech)
 
   
 
@@ -102,4 +102,4 @@ Kho tài nguyên của trang: [Boo Space Gumroad](https://boospace.gumroad.com)
 
   
 
-Các sản phẩm kèm them: [Linktr](https://linktr.ee/boospace)
+Các sản phẩm kèm theo: [Linktr](https://linktr.ee/boospace)

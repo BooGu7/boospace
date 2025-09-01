@@ -21,8 +21,8 @@ export const siteConfig: SiteConfig = {
 		position: "center", // Equivalent to object-position, only supports 'top', 'center', 'bottom'. 'center' by default
 		credit: {
 			enable: true, // Display the credit text of the banner image
-			text: "Sống và làm việc thông minh, Không phức tạp", // Credit text to be displayed
-			url: "https:boospace.blog", // (Optional) URL link to the original artwork or artist's page
+			text: "Sống và làm việc thông minh, không phức tạp", // Credit text to be displayed
+			url: "", // (Optional) URL link to the original artwork or artist's page
 		},
 	},
 	toc: {
@@ -44,18 +44,18 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Home,
 		LinkPreset.Archive,
 		LinkPreset.About,
-		{
-			name: "Facebook",
-			url: "https://www.facebook.com/themilkiway", // Internal links should not include the base path, as it is automatically added
-			external: false, // Show an external link icon and will open in a new tab
-		},
+		// {
+		// 	name: "Facebook",
+		// 	url: "https://www.facebook.com/themilkiway", // Internal links should not include the base path, as it is automatically added
+		// 	external: true, // Show an external link icon and will open in a new tab
+		// },
 	],
 };
 
 export const profileConfig: ProfileConfig = {
 	avatar: "assets/images/avatar.png", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 	name: "Boo Space",
-	bio: "Ton That Trong",
+	bio: "Chia sẻ giải pháp thực tế cho người yêu tối giản công việc",
 	links: [
 		{
 			name: "Facebook",

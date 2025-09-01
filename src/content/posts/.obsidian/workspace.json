@@ -1,25 +1,20 @@
 {
   "main": {
-    "id": "a8993e673ed44d86",
+    "id": "317bf477499547a6",
     "type": "split",
     "children": [
       {
-        "id": "b9354fa7d5dde57f",
+        "id": "cb5849b4b81d25ea",
         "type": "tabs",
         "children": [
           {
-            "id": "aca906dd5af166aa",
+            "id": "e015bdb4fa0e48dd",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "spec/about.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "about"
+              "title": "Tab mới"
             }
           }
         ]
@@ -28,15 +23,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "19b4021ccbce14ae",
+    "id": "72ce098f453a9c83",
     "type": "split",
     "children": [
       {
-        "id": "763fe0659b108e34",
+        "id": "52637977fb2f6aae",
         "type": "tabs",
         "children": [
           {
-            "id": "436e18de6cb27af2",
+            "id": "66befc2b5338ee3f",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -49,7 +44,7 @@
             }
           },
           {
-            "id": "c66a14017b1711f0",
+            "id": "38747971c3df4f86",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -66,7 +61,7 @@
             }
           },
           {
-            "id": "7d8a5e92dcf68cc5",
+            "id": "c4d727d093975a24",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -75,22 +70,23 @@
               "title": "Đánh dấu"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
     "width": 300
   },
   "right": {
-    "id": "2a65ade5675c10fb",
+    "id": "24cd3e78971bbacb",
     "type": "split",
     "children": [
       {
-        "id": "233bec5b5adb6706",
+        "id": "c8e4a1be98b23d3d",
         "type": "tabs",
         "children": [
           {
-            "id": "7e021e39e5671f44",
+            "id": "ab6f3accf444d6da",
             "type": "leaf",
             "state": {
               "type": "backlink",
@@ -108,7 +104,7 @@
             }
           },
           {
-            "id": "4a3601221ad49ab1",
+            "id": "7e2fd9dc60ed1406",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
@@ -121,7 +117,7 @@
             }
           },
           {
-            "id": "9d8d6fa27ac28af3",
+            "id": "9845eb9dbe651585",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -136,7 +132,7 @@
             }
           },
           {
-            "id": "dfc1dce1ecb752db",
+            "id": "a0eb372d2f285e44",
             "type": "leaf",
             "state": {
               "type": "outline",
@@ -167,25 +163,10 @@
       "bases:Create new base": false
     }
   },
-  "active": "436e18de6cb27af2",
+  "active": "e015bdb4fa0e48dd",
   "lastOpenFiles": [
     "2025-09-01.md",
-    "spec/about.md",
-    "Chưa đặt tên.md",
-    "posts/civil3d/tao-corridor-tu-alignment-va-assembly-bang-dynamo-civil3d/index.md",
-    "posts/civil3d/tao-corridor-tu-alignment-va-assembly-bang-dynamo-civil3d/guide2.png",
-    "posts/civil3d/index.md",
-    "posts/civil3d/tao-corridor-tu-alignment-va-assembly-bang-dynamo-civil3d/guide.png",
-    "posts/civil3d/tao-corridor-tu-alignment-va-assembly-bang-dynamo-civil3d/banner-dynamo.png",
-    "posts/civil3d/cover.jpeg",
-    "posts/civil3d/tao-corridor-tu-alignment-va-assembly-bang-dynamo-civil3d",
-    "posts/civil3d/index copy.md",
-    "posts/guide/index.md",
-    "posts/civil3d",
-    "posts/civil3đ",
-    "posts/guide/cover.jpeg",
-    "posts/draft.md",
-    "posts/expressive-code.md",
-    "posts/github.md"
+    "Chưa đặt tên.base",
+    "Chưa đặt tên.canvas"
   ]
 }

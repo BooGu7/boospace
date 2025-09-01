@@ -20,6 +20,10 @@ import type { Favicon } from "../types/config";
 import { pathsEqual, url } from "../utils/url-utils";
 import "katex/dist/katex.css";
 
+// Vercel : Web Analytics and Speed Insights
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 interface Props {
 	title?: string;
 	banner?: string;
