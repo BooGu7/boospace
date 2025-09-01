@@ -1,9 +1,5 @@
 # About
-This is the demo site for [Fuwari](https://github.com/saicaca/fuwari).
 
-::github{repo="saicaca/fuwari"}
-
-> ### Sources of images used in this site
-> - [Unsplash](https://unsplash.com/)
-> - [星と少女](https://www.pixiv.net/artworks/108916539) by [Stella](https://www.pixiv.net/users/93273965)
-> - [Rabbit - v1.4 Showcase](https://civitai.com/posts/586908) by [Rabbit_YourMajesty](https://civitai.com/user/Rabbit_YourMajesty)
+Chào mừng bạn đến với **Boo Space** 👋  
+Đây là không gian mình xây dựng để chia sẻ về **công nghệ**, **tự động hóa** và **tối giản công việc**.  
+Mục tiêu của Boo Space là giúp mọi người **làm việc nhẹ nhàng hơn – hiệu quả hơn** thông qua các công cụ như *n8n, Make.com, Zapier…* cùng những trải nghiệm thực tế.
