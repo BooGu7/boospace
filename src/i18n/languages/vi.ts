@@ -3,8 +3,8 @@ import type { Translation } from "../translation";
 
 export const vi: Translation = {
 	[Key.home]: "Trang chủ",
-	[Key.about]: "Giới thiệu",
-	[Key.archive]: "Kho bài",
+	[Key.about]: "Thông tin",
+	[Key.archive]: "Bài viết",
 	[Key.search]: "Tìm kiếm",
 
 	[Key.tags]: "Thẻ",

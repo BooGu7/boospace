@@ -9,8 +9,7 @@ import { LinkPreset } from "./types/config";
 
 export const siteConfig: SiteConfig = {
 	title: "Boo Space",
-	subtitle:
-		"Boo Space - Chia sẻ giải pháp thực tế cho người yêu tối giản công việc",
+	subtitle: "Chia sẻ giải pháp thực tế cho người yêu tối giản công việc",
 	lang: "vi", // Language code, e.g. 'en', 'zh_CN', 'ja', etc.
 	themeColor: {
 		hue: 200, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
