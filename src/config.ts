@@ -44,11 +44,11 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Home,
 		LinkPreset.Archive,
 		LinkPreset.About,
-		// {
-		// 	name: "Facebook",
-		// 	url: "https://www.facebook.com/themilkiway", // Internal links should not include the base path, as it is automatically added
-		// 	external: true, // Show an external link icon and will open in a new tab
-		// },
+		{
+			name: "Workflow",
+			url: "https://primary-production-7e4d.up.railway.app", // Internal links should not include the base path, as it is automatically added
+			external: true, // Show an external link icon and will open in a new tab
+		},
 	],
 };
 
