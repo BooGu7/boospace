@@ -20,9 +20,9 @@ import type { Favicon } from "../types/config";
 import { pathsEqual, url } from "../utils/url-utils";
 import "katex/dist/katex.css";
 
-// Vercel : Web Analytics and Speed Insights
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+// Vercel : Web Analytics and Speed Insights (Astro inject APIs)
+import { inject } from "@vercel/analytics";
+import { injectSpeedInsights } from "@vercel/speed-insights";
 
 interface Props {
 	title?: string;
@@ -74,6 +74,10 @@ const bannerOffsetByPosition = {
 };
 const bannerOffset =
 	bannerOffsetByPosition[siteConfig.banner.position || "center"];
+
+// Inject Vercel scripts for Astro
+inject();
+injectSpeedInsights();
 ---
 
 <!DOCTYPE html>
@@ -160,6 +164,7 @@ const bannerOffset =
 
 		<!-- increase the page height during page transition to prevent the scrolling animation from jumping -->
 		<div id="page-height-extend" class="hidden h-[300vh]"></div>
+		{null}
 	</body>
 </html>
 
