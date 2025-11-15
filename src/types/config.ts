@@ -40,6 +40,10 @@ export type SiteConfig = {
 	googleAnalytics?: {
 		id: string; // Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX)
 	};
+
+	googleTagManager?: {
+		id: string; // Google Tag Manager Container ID (e.g., GTM-XXXXXXX)
+	};
 };
 
 export type Favicon = {
