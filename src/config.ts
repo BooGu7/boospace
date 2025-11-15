@@ -37,6 +37,9 @@ export const siteConfig: SiteConfig = {
 		//   sizes: '32x32',              // (Optional) Size of the favicon, set only if you have favicons of different sizes
 		// }
 	],
+	googleAnalytics: {
+		id: "AW-16629366126", // Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX). Leave empty to disable.
+	},
 };
 
 export const navBarConfig: NavBarConfig = {
