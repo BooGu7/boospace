@@ -39,6 +39,7 @@ export type SiteConfig = {
 
 	googleAnalytics?: {
 		id: string; // Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX)
+		gatewayDomain?: string; // Google Tag Gateway domain (e.g., gtm.boospace.tech). Leave empty to use default googletagmanager.com
 	};
 
 	googleTagManager?: {

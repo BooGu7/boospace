@@ -156,17 +156,30 @@ injectSpeedInsights();
 		<link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={`${Astro.site}rss.xml`}/>
 
 		{/* Google Analytics */}
-		{siteConfig.googleAnalytics?.id && (
-			<>
-				<script async src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.googleAnalytics.id}`}></script>
-				<script is:inline define:vars={{gaId: siteConfig.googleAnalytics.id}}>
-					window.dataLayer = window.dataLayer || [];
-					function gtag(){dataLayer.push(arguments);}
-					gtag('js', new Date());
-					gtag('config', gaId);
-				</script>
-			</>
-		)}
+		{siteConfig.googleAnalytics?.id && (() => {
+			const gatewayDomain = siteConfig.googleAnalytics?.gatewayDomain;
+			const scriptUrl = gatewayDomain 
+				? `https://${gatewayDomain}/gtag/js?id=${siteConfig.googleAnalytics.id}`
+				: `https://www.googletagmanager.com/gtag/js?id=${siteConfig.googleAnalytics.id}`;
+			return (
+				<>
+					<script async src={scriptUrl}></script>
+					<script is:inline define:vars={{gaId: siteConfig.googleAnalytics.id, gatewayDomain: gatewayDomain || ''}}>
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+						// Cấu hình Google Tag Gateway nếu có
+						if (gatewayDomain) {
+							gtag('config', gaId, {
+								'gtm_base_url': `https://${gatewayDomain}`
+							});
+						} else {
+							gtag('config', gaId);
+						}
+					</script>
+				</>
+			);
+		})()}
 
 		{/* Google Tag Manager */}
 		{siteConfig.googleTagManager?.id && (
