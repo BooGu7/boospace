@@ -12,6 +12,7 @@ Google Tag Gateway cho phép bạn sử dụng tên miền của chính bạn (t
 ## 🔧 Cấu Hình Hiện Tại
 
 Trong code của bạn đã được cấu hình:
+
 - **Google Analytics ID**: `AW-16629366126`
 - **Gateway Domain**: `gtm.boospace.tech`
 - **Script URL**: `https://gtm.boospace.tech/gtag/js?id=AW-16629366126`
@@ -76,6 +77,7 @@ Kết quả mong đợi: `gtm.boospace.tech` → `gtm-gateway.googletagmanager.c
 Google sẽ yêu cầu verify domain. Có 2 cách:
 
 #### Cách 1: DNS TXT Record (Khuyến nghị)
+
 1. Google sẽ cung cấp một TXT record
 2. Thêm vào Cloudflare DNS:
    ```
@@ -88,6 +90,7 @@ Google sẽ yêu cầu verify domain. Có 2 cách:
 4. Nhấp **Verify** trong Google Ads
 
 #### Cách 2: HTML File Upload
+
 1. Download file HTML từ Google
 2. Upload file vào thư mục `/public` của website
 3. Đảm bảo file có thể truy cập tại: `https://boospace.tech/[tên-file].html`
@@ -115,11 +118,13 @@ Google sẽ yêu cầu verify domain. Có 2 cách:
 ### 3.2. Kiểm Tra Console
 
 Trong Console (F12), gõ:
+
 ```javascript
-window.dataLayer
+window.dataLayer;
 ```
 
 Kết quả mong đợi: Mảng chứa các event và config, bao gồm:
+
 ```javascript
 [
   {gtm.start: [timestamp], event: "gtm.js"},
@@ -131,6 +136,7 @@ Kết quả mong đợi: Mảng chứa các event và config, bao gồm:
 ### 3.3. Kiểm Tra Network Requests
 
 Trong Network tab, bạn sẽ thấy:
+
 - ✅ Request đến `gtm.boospace.tech` (không phải `googletagmanager.com`)
 - ✅ Status code: 200 (thành công)
 - ✅ Response headers có `x-goog-tag-gateway: true`
@@ -149,6 +155,7 @@ Trong Network tab, bạn sẽ thấy:
 **Triệu chứng**: Script không load, lỗi 404 hoặc DNS error
 
 **Giải pháp**:
+
 ```bash
 # Kiểm tra DNS
 dig gtm.boospace.tech
@@ -166,6 +173,7 @@ nslookup gtm.boospace.tech
 **Triệu chứng**: Script load nhưng conversion không được track
 
 **Giải pháp**:
+
 1. Kiểm tra lại TXT record trong Cloudflare
 2. Đảm bảo TXT record đúng format từ Google
 3. Chờ DNS propagate (có thể mất đến 24 giờ)
@@ -176,6 +184,7 @@ nslookup gtm.boospace.tech
 **Triệu chứng**: Trong Network tab vẫn thấy request đến `googletagmanager.com`
 
 **Giải pháp**:
+
 1. Kiểm tra `src/config.ts`:
    ```typescript
    googleAnalytics: {
@@ -194,6 +203,7 @@ nslookup gtm.boospace.tech
 **Triệu chứng**: Console hiển thị CORS error
 
 **Giải pháp**:
+
 - Đảm bảo Cloudflare proxy đang bật (☁️ màu cam)
 - Kiểm tra SSL/TLS settings trong Cloudflare
 - Đảm bảo domain đã được verify trong Google Ads
@@ -244,4 +254,3 @@ Nếu gặp vấn đề:
 ---
 
 **Lưu ý**: Sau khi hoàn tất tất cả các bước, có thể mất 24-48 giờ để Google Tag Gateway hoạt động hoàn toàn và conversion data được sync đầy đủ.
-

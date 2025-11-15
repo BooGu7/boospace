@@ -86,9 +86,72 @@ injectSpeedInsights();
 >
 	<head>
 
+		<meta charset="UTF-8" />
+
+		{/* Google Analytics & Tag Manager - Phải đặt sớm trong head */}
+		{siteConfig.googleAnalytics?.id && (() => {
+			const gatewayDomain = siteConfig.googleAnalytics?.gatewayDomain;
+			const gaId = siteConfig.googleAnalytics.id;
+			// Khởi tạo dataLayer sớm
+			return (
+				<>
+					<script is:inline>
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+					</script>
+					{gatewayDomain ? (
+						<>
+							<script is:inline define:vars={{gaId, gatewayDomain}}>
+								// Thử load từ gateway domain, fallback về googletagmanager.com nếu fail
+								(function() {
+									const script = document.createElement('script');
+									script.async = true;
+									script.src = `https://${gatewayDomain}/gtag/js?id=${gaId}`;
+									script.onerror = function() {
+										// Fallback nếu gateway không hoạt động
+										this.onerror = null;
+										this.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+									};
+									var firstScript = document.getElementsByTagName('script')[0];
+									firstScript.parentNode.insertBefore(script, firstScript);
+								})();
+								gtag('js', new Date());
+								// Thử config với gateway, nhưng sẽ tự động fallback nếu cần
+								try {
+									gtag('config', gaId, {
+										'gtm_base_url': `https://${gatewayDomain}`
+									});
+								} catch(e) {
+									gtag('config', gaId);
+								}
+							</script>
+						</>
+					) : (
+						<>
+							<script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+							<script is:inline define:vars={{gaId}}>
+								gtag('js', new Date());
+								gtag('config', gaId);
+							</script>
+						</>
+					)}
+				</>
+			);
+		})()}
+
+		{/* Google Tag Manager */}
+		{siteConfig.googleTagManager?.id && (
+			<script is:inline define:vars={{gtmId: siteConfig.googleTagManager.id}}>
+				(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+				new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+				'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+				})(window,document,'script','dataLayer',gtmId);
+			</script>
+		)}
+
 		<title>{pageTitle}</title>
 
-		<meta charset="UTF-8" />
 		<meta name="description" content={description || pageTitle}>
 		<meta name="author" content={profileConfig.name}>
 
@@ -154,43 +217,6 @@ injectSpeedInsights();
 		<slot name="head"></slot>
 
 		<link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={`${Astro.site}rss.xml`}/>
-
-		{/* Google Analytics */}
-		{siteConfig.googleAnalytics?.id && (() => {
-			const gatewayDomain = siteConfig.googleAnalytics?.gatewayDomain;
-			const scriptUrl = gatewayDomain 
-				? `https://${gatewayDomain}/gtag/js?id=${siteConfig.googleAnalytics.id}`
-				: `https://www.googletagmanager.com/gtag/js?id=${siteConfig.googleAnalytics.id}`;
-			return (
-				<>
-					<script async src={scriptUrl}></script>
-					<script is:inline define:vars={{gaId: siteConfig.googleAnalytics.id, gatewayDomain: gatewayDomain || ''}}>
-						window.dataLayer = window.dataLayer || [];
-						function gtag(){dataLayer.push(arguments);}
-						gtag('js', new Date());
-						// Cấu hình Google Tag Gateway nếu có
-						if (gatewayDomain) {
-							gtag('config', gaId, {
-								'gtm_base_url': `https://${gatewayDomain}`
-							});
-						} else {
-							gtag('config', gaId);
-						}
-					</script>
-				</>
-			);
-		})()}
-
-		{/* Google Tag Manager */}
-		{siteConfig.googleTagManager?.id && (
-			<script is:inline define:vars={{gtmId: siteConfig.googleTagManager.id}}>
-				(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-				new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-				'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-				})(window,document,'script','dataLayer',gtmId);
-			</script>
-		)}
 
 	</head>
 	<body class=" min-h-screen transition " class:list={[{"lg:is-home": isHomePage, "enable-banner": enableBanner}]}

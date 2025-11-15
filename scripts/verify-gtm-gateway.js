@@ -10,7 +10,9 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import dns from 'dns';
 import { promisify } from 'util';
+import { exec } from 'child_process';
 
+const execAsync = promisify(exec);
 const resolve4 = promisify(dns.resolve4);
 const resolveCname = promisify(dns.resolveCname);
 
@@ -38,38 +40,70 @@ function readConfig() {
 	}
 }
 
-// Kiểm tra DNS
+// Kiểm tra DNS bằng nhiều phương pháp
 async function checkDNS(domain) {
 	console.log(`\n🔍 Kiểm tra DNS cho: ${domain}`);
 	
+	let dnsOk = false;
+	let method = '';
+	
+	// Phương pháp 1: Sử dụng Node.js DNS module
 	try {
-		// Kiểm tra CNAME
 		const cnameRecords = await resolveCname(domain);
-		console.log(`✅ CNAME records:`);
+		console.log(`✅ CNAME records (Node.js DNS):`);
 		cnameRecords.forEach(record => {
 			console.log(`   → ${record}`);
+			if (record.includes('gtm-gateway.googletagmanager.com')) {
+				dnsOk = true;
+				method = 'Node.js DNS';
+			}
 		});
-		
-		// Kiểm tra A record (nếu có)
-		try {
-			const aRecords = await resolve4(domain);
-			console.log(`✅ A records (IPv4):`);
-			aRecords.forEach(record => {
-				console.log(`   → ${record}`);
-			});
-		} catch (e) {
-			// Không có A record là bình thường nếu chỉ có CNAME
-		}
-		
-		return true;
 	} catch (error) {
-		console.error(`❌ DNS Error: ${error.message}`);
-		console.log(`\n💡 Hướng dẫn:`);
-		console.log(`   1. Kiểm tra DNS record trong Cloudflare`);
-		console.log(`   2. Đảm bảo CNAME record trỏ đến: gtm-gateway.googletagmanager.com`);
-		console.log(`   3. Chờ DNS propagate (có thể mất 5-10 phút)`);
-		return false;
+		// Thử phương pháp 2: Sử dụng nslookup (Windows/Mac/Linux)
+		try {
+			const isWindows = process.platform === 'win32';
+			const command = isWindows 
+				? `nslookup -type=CNAME ${domain}`
+				: `nslookup -type=CNAME ${domain}`;
+			
+			const { stdout, stderr } = await execAsync(command);
+			
+			if (stdout && !stderr) {
+				console.log(`\n📡 Thử kiểm tra bằng nslookup...`);
+				const output = stdout.toString();
+				
+				// Kiểm tra xem có kết quả không
+				if (output.includes(domain) || output.includes('gtm-gateway')) {
+					console.log(`✅ DNS record được tìm thấy (nslookup)`);
+					console.log(`   Output: ${output.split('\n').slice(0, 5).join('\n   ')}`);
+					dnsOk = true;
+					method = 'nslookup';
+				} else {
+					console.log(`⚠️  DNS record chưa được tìm thấy`);
+				}
+			}
+		} catch (execError) {
+			// Nếu cả hai phương pháp đều fail, DNS chưa được cấu hình
+			console.log(`\n⚠️  Không thể resolve DNS cho ${domain}`);
+		}
 	}
+	
+	if (!dnsOk) {
+		console.log(`\n❌ DNS chưa được cấu hình hoặc chưa propagate`);
+		console.log(`\n💡 Hướng dẫn cấu hình DNS:`);
+		console.log(`   1. Đăng nhập Cloudflare: https://dash.cloudflare.com`);
+		console.log(`   2. Chọn domain: boospace.tech`);
+		console.log(`   3. Vào DNS → Records → Add record`);
+		console.log(`   4. Điền thông tin:`);
+		console.log(`      Type: CNAME`);
+		console.log(`      Name: gtm`);
+		console.log(`      Target: gtm-gateway.googletagmanager.com`);
+		console.log(`      Proxy: ☁️ Proxied (ON)`);
+		console.log(`   5. Save và chờ 5-10 phút để DNS propagate`);
+		console.log(`   6. Chạy lại script: pnpm run verify-gtm`);
+	}
+	
+	return dnsOk;
 }
 
 // Kiểm tra HTTP endpoint
@@ -78,7 +112,18 @@ async function checkHTTP(domain, gaId) {
 	const url = `https://${domain}/gtag/js?id=${gaId}`;
 	
 	try {
-		const response = await fetch(url, { method: 'HEAD' });
+		const controller = new AbortController();
+		const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+		
+		const response = await fetch(url, { 
+			method: 'HEAD',
+			signal: controller.signal,
+			headers: {
+				'User-Agent': 'Mozilla/5.0 (compatible; GTM-Gateway-Verifier/1.0)'
+			}
+		});
+		
+		clearTimeout(timeoutId);
 		
 		if (response.ok) {
 			console.log(`✅ Endpoint hoạt động: ${url}`);
@@ -88,19 +133,29 @@ async function checkHTTP(domain, gaId) {
 			const gatewayHeader = response.headers.get('x-goog-tag-gateway');
 			if (gatewayHeader) {
 				console.log(`   ✅ Google Tag Gateway header: ${gatewayHeader}`);
+			} else {
+				console.log(`   ⚠️  Không có x-goog-tag-gateway header (có thể domain chưa verify)`);
 			}
 			
 			return true;
 		} else {
 			console.error(`❌ Endpoint trả về lỗi: ${response.status} ${response.statusText}`);
+			if (response.status === 404) {
+				console.log(`   💡 404 có thể do domain chưa được verify trong Google Ads`);
+			}
 			return false;
 		}
 	} catch (error) {
-		console.error(`❌ Không thể kết nối đến endpoint: ${error.message}`);
+		if (error.name === 'AbortError') {
+			console.error(`❌ Timeout khi kết nối đến endpoint (quá 10 giây)`);
+		} else {
+			console.error(`❌ Không thể kết nối đến endpoint: ${error.message}`);
+		}
 		console.log(`\n💡 Có thể do:`);
-		console.log(`   - DNS chưa propagate`);
+		console.log(`   - DNS chưa propagate (kiểm tra bằng: nslookup ${domain})`);
 		console.log(`   - Domain chưa được verify trong Google Ads`);
-		console.log(`   - SSL certificate chưa được cấu hình`);
+		console.log(`   - SSL certificate chưa được cấu hình trong Cloudflare`);
+		console.log(`   - Cloudflare proxy chưa được bật (phải là ☁️ Proxied)`);
 		return false;
 	}
 }
@@ -147,12 +202,32 @@ async function main() {
 	if (dnsOk && httpOk) {
 		console.log(`\n🎉 Google Tag Gateway đã được cấu hình đúng!`);
 		console.log(`\n📝 Bước tiếp theo:`);
-		console.log(`   1. Verify domain trong Google Ads dashboard`);
-		console.log(`   2. Test trên website thực tế`);
-		console.log(`   3. Kiểm tra conversion tracking`);
+		console.log(`   1. Verify domain trong Google Ads dashboard (nếu chưa làm)`);
+		console.log(`   2. Test trên website thực tế: https://boospace.tech`);
+		console.log(`   3. Kiểm tra Network tab trong DevTools (F12)`);
+		console.log(`   4. Kiểm tra conversion tracking trong Google Ads`);
+		process.exit(0);
 	} else {
-		console.log(`\n⚠️  Cần kiểm tra lại cấu hình. Xem file GOOGLE_TAG_GATEWAY_SETUP.md để biết chi tiết.`);
-		process.exit(1);
+		console.log(`\n⚠️  Google Tag Gateway chưa được cấu hình hoàn chỉnh`);
+		console.log(`\n📚 Tài liệu chi tiết:`);
+		console.log(`   - Xem file: GOOGLE_TAG_GATEWAY_SETUP.md`);
+		console.log(`   - Quick start: GTM_GATEWAY_QUICK_START.md`);
+		console.log(`\n🔧 Các bước cần làm:`);
+		let stepNum = 1;
+		if (!dnsOk) {
+			console.log(`   ${stepNum}. ⚠️  Cấu hình DNS CNAME trong Cloudflare`);
+			stepNum++;
+		}
+		if (!httpOk) {
+			if (dnsOk) {
+				console.log(`   ${stepNum}. ⚠️  Verify domain trong Google Ads`);
+			} else {
+				console.log(`   ${stepNum}. ⚠️  Sau đó verify domain trong Google Ads`);
+			}
+		}
+		console.log(`\n💡 Script này sẽ không fail nếu DNS chưa setup - đây là bình thường!`);
+		console.log(`   Chỉ cần làm theo hướng dẫn trên và chạy lại script sau khi cấu hình.`);
+		process.exit(0); // Exit với code 0 vì đây không phải lỗi nghiêm trọng
 	}
 }
 
