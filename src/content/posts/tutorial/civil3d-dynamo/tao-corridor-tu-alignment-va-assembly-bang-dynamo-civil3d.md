@@ -7,7 +7,7 @@ tags:
   - Autodesk Civil 3D
   - Dynamo
 category: Civil Engineering
-draft: false
+draft: true
 ---
 
 Trong thiết kế hạng mục giao thông bằng phần mềm Autodesk Civil 3D, việc tạo Corridor từ Alignment và Assembly là rất quan trọng để tạo dựng mô hình và thiết kế dự án chính xác. Sử dụng Dynamo Civil 3D, kết hợp với các gói **Camber và Civil3DToolkit**, cung cấp khả năng tự động hóa mạnh mẽ để hợp lý hóa quy trình này. Blog này sẽ hướng dẫn bạn các bước để tạo Alignment và Assembly bằng Dynamo (IronPython), dựa trên các tham số đầu vào từ tệp Excel đã lập sẵn.

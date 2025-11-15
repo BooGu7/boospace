@@ -7,7 +7,7 @@ tags:
   - AI
   - InVideo
 category: Application
-draft: false
+draft: true
 ---
 
 [InVideo AI](https://invideo.sjv.io/m5eeXX) là một công cụ tuyệt vời giúp bạn dễ dàng biến văn bản thành các sản phẩm video chất lượng cao. Với các tính năng mạnh mẽ và giao diện thân thiện với người dùng, phần mềm AI này đang dần trở thành một công cụ lý tưởng cho những ai muốn tạo video nhanh chóng mà không cần kỹ năng chỉnh sửa phức tạp. Trong bài viết này, Boo Space sẽ hướng dẫn bạn từng bước về cách tải xuống và sử dụng [InVideo AI](https://invideo.sjv.io/m5eeXX) để tạo video.
