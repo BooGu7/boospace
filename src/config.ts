@@ -42,7 +42,7 @@ export const siteConfig: SiteConfig = {
 		gatewayDomain: "", // Google Tag Gateway domain. Tạm thời để trống vì DNS chưa được cấu hình. Sau khi cấu hình DNS, thay bằng "gtm.boospace.tech"
 	},
 	googleTagManager: {
-		id: "AW-16629366126", // Google Tag Manager Container ID (e.g., GTM-XXXXXXX). Leave empty to disable.
+		id: "GTM-KNR33RBV", // Google Tag Manager Container ID (e.g., GTM-XXXXXXX). Leave empty to disable.
 	},
 };
 

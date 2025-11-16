@@ -12,6 +12,7 @@
 		"type-check": "tsc --noEmit --isolatedDeclarations",
 		"new-post": "node scripts/new-post.js",
 		"verify-gtm": "node scripts/verify-gtm-gateway.js",
+		"verify-tag": "node scripts/verify-google-tag.js",
 		"format": "biome format --write ./src",
 		"lint": "biome check --write ./src",
 		"preinstall": "npx only-allow pnpm"

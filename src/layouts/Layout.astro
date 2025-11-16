@@ -129,10 +129,10 @@ injectSpeedInsights();
 					) : (
 						<>
 							<script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
-							<script is:inline define:vars={{gaId}}>
+							<script is:inline set:html={`
 								gtag('js', new Date());
-								gtag('config', gaId);
-							</script>
+								gtag('config', '${gaId}');
+							`}></script>
 						</>
 					)}
 				</>
