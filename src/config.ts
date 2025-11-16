@@ -39,7 +39,7 @@ export const siteConfig: SiteConfig = {
 	],
 	googleAnalytics: {
 		id: "AW-16629366126", // Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX). Leave empty to disable.
-		gatewayDomain: "", // Google Tag Gateway domain. Tạm thời để trống vì DNS chưa được cấu hình. Sau khi cấu hình DNS, thay bằng "gtm.boospace.tech"
+		gatewayDomain: "gtm.boospace.tech", // Google Tag Gateway domain. Tạm thời để trống vì DNS chưa được cấu hình. Sau khi cấu hình DNS, thay bằng "gtm.boospace.tech"
 	},
 	googleTagManager: {
 		id: "GTM-KNR33RBV", // Google Tag Manager Container ID (e.g., GTM-XXXXXXX). Leave empty to disable.
