@@ -89,9 +89,12 @@ injectSpeedInsights();
 		<meta charset="UTF-8" />
 
 		{/* Google Analytics & Tag Manager - Phải đặt sớm trong head */}
-		{siteConfig.googleAnalytics?.id && (() => {
+		{(siteConfig.googleAnalytics?.id || siteConfig.googleAnalytics?.ga4Id) && (() => {
 			const gatewayDomain = siteConfig.googleAnalytics?.gatewayDomain;
-			const gaId = siteConfig.googleAnalytics.id;
+			const gaId = siteConfig.googleAnalytics?.id;
+			const ga4Id = siteConfig.googleAnalytics?.ga4Id;
+			// Sử dụng ID đầu tiên có sẵn để load script
+			const primaryId = gaId || ga4Id;
 			// Khởi tạo dataLayer sớm
 			return (
 				<>
@@ -101,37 +104,45 @@ injectSpeedInsights();
 					</script>
 					{gatewayDomain ? (
 						<>
-							<script is:inline define:vars={{gaId, gatewayDomain}}>
+							<script is:inline set:html={`
 								// Thử load từ gateway domain, fallback về googletagmanager.com nếu fail
 								(function() {
 									const script = document.createElement('script');
 									script.async = true;
-									script.src = `https://${gatewayDomain}/gtag/js?id=${gaId}`;
+									script.src = 'https://${gatewayDomain}/gtag/js?id=${primaryId}';
 									script.onerror = function() {
 										// Fallback nếu gateway không hoạt động
 										this.onerror = null;
-										this.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+										this.src = 'https://www.googletagmanager.com/gtag/js?id=${primaryId}';
 									};
 									var firstScript = document.getElementsByTagName('script')[0];
 									firstScript.parentNode.insertBefore(script, firstScript);
 								})();
 								gtag('js', new Date());
-								// Thử config với gateway, nhưng sẽ tự động fallback nếu cần
-								try {
-									gtag('config', gaId, {
-										'gtm_base_url': `https://${gatewayDomain}`
+								// Config các tag IDs
+								${gaId ? `try {
+									gtag('config', '${gaId}', {
+										'gtm_base_url': 'https://${gatewayDomain}'
 									});
 								} catch(e) {
-									gtag('config', gaId);
-								}
-							</script>
+									gtag('config', '${gaId}');
+								}` : ''}
+								${ga4Id ? `try {
+									gtag('config', '${ga4Id}', {
+										'gtm_base_url': 'https://${gatewayDomain}'
+									});
+								} catch(e) {
+									gtag('config', '${ga4Id}');
+								}` : ''}
+							`}></script>
 						</>
 					) : (
 						<>
-							<script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+							<script async src={`https://www.googletagmanager.com/gtag/js?id=${primaryId}`}></script>
 							<script is:inline set:html={`
 								gtag('js', new Date());
-								gtag('config', '${gaId}');
+								${gaId ? `gtag('config', '${gaId}');` : ''}
+								${ga4Id ? `gtag('config', '${ga4Id}');` : ''}
 							`}></script>
 						</>
 					)}
@@ -141,13 +152,13 @@ injectSpeedInsights();
 
 		{/* Google Tag Manager */}
 		{siteConfig.googleTagManager?.id && (
-			<script is:inline define:vars={{gtmId: siteConfig.googleTagManager.id}}>
+			<script is:inline set:html={`
 				(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 				new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 				'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-				})(window,document,'script','dataLayer',gtmId);
-			</script>
+				})(window,document,'script','dataLayer','${siteConfig.googleTagManager.id}');
+			`}></script>
 		)}
 
 		<title>{pageTitle}</title>

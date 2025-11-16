@@ -38,7 +38,8 @@ export type SiteConfig = {
 	favicon: Favicon[];
 
 	googleAnalytics?: {
-		id: string; // Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX)
+		id: string; // Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX) or Google Ads Conversion ID (e.g., AW-XXXXXXXXXX)
+		ga4Id?: string; // Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX or GT-XXXXXXXXXX). Separate from Ads Conversion ID if needed
 		gatewayDomain?: string; // Google Tag Gateway domain (e.g., gtm.boospace.tech). Leave empty to use default googletagmanager.com
 	};
 
