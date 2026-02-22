@@ -53,8 +53,8 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Archive,
 		LinkPreset.About,
 		{
-			name: "Workflow",
-			url: "https://primary-production-7e4d.up.railway.app", // Internal links should not include the base path, as it is automatically added
+			name: "AI Workflow (n8n)",
+			url: "https://n8n.boospace.tech", // Internal links should not include the base path, as it is automatically added
 			external: true, // Show an external link icon and will open in a new tab
 		},
 	],
