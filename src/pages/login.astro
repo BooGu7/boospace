@@ -1,0 +1,15 @@
+---
+import TikTokLoginConsole from "@components/TikTokLoginConsole.svelte";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+---
+
+<MainGridLayout
+	title="TikTok Login"
+	description="Connect a TikTok account, inspect the granted profile scope, and upload a draft video."
+>
+	<div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
+		<div class="card-base z-10 px-4 md:px-6 py-4 md:py-6 relative w-full">
+			<TikTokLoginConsole client:load />
+		</div>
+	</div>
+</MainGridLayout>

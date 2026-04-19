@@ -50,6 +50,15 @@ scripts/         Script ho tro van hanh
 
 Du an dang duoc cau hinh de build static va co the deploy len Vercel, Cloudflare Pages, Netlify hoac bat ky nen tang static hosting nao.
 
+## TikTok Login + Upload
+
+Trang `/login/` da duoc them de demo TikTok OAuth va upload draft video.
+
+- UI: `src/pages/login.astro`
+- API: `api/tiktok/*`
+- Huong dan cau hinh: `docs/tiktok-login-upload.md`
+- Luu y: flow OAuth/upload can runtime server-side tren Vercel functions
+
 ## Ghi chu
 
 Kho ma nay da duoc tuy bien phuc vu rieng cho Boo Space. Thong tin ve thanh phan ben thu ba nam trong `THIRD_PARTY_NOTICES.md`.
