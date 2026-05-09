@@ -49,7 +49,10 @@ const jsonLd = {
 	inLanguage: getEntryLocale(entry).replace("_", "-"),
 	// TODO include cover image here
 };
-const translatedSlug = await getTranslatedPostSlug(entry.slug, locale === "vi" ? "en" : "vi");
+const translatedSlug = await getTranslatedPostSlug(
+	entry.slug,
+	locale === "vi" ? "en" : "vi",
+);
 const alternates: Partial<Record<SiteLocale, string>> = {
 	vi: getPostUrlBySlug(entry.slug, "vi"),
 };

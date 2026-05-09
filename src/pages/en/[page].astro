@@ -1,10 +1,10 @@
 ---
-import type { GetStaticPaths, Page } from "astro";
 import Pagination from "@components/control/Pagination.astro";
 import PostPage from "@components/PostPage.astro";
 import { PAGE_SIZE } from "@constants/constants";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getSortedPosts } from "@utils/content-utils";
+import type { GetStaticPaths, Page } from "astro";
 
 export const getStaticPaths = (async () => {
 	const allBlogPosts = await getSortedPosts("en");
@@ -21,7 +21,7 @@ export const getStaticPaths = (async () => {
 				prev: currentPage === 2 ? "/en/" : `/en/${currentPage - 1}/`,
 				next: currentPage < lastPage ? `/en/${currentPage + 1}/` : undefined,
 			},
-		} as Page<any>;
+		} as Page;
 
 		return {
 			params: { page: String(currentPage) },

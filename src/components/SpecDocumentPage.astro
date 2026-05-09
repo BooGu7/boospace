@@ -28,12 +28,11 @@ const {
 } = Astro.props;
 
 const resolvedLocale = getLocaleFromPathname(Astro.url.pathname);
-const entry =
-	entryId
-		? await getLocalizedSpecEntry(entryId, resolvedLocale)
-		: entryBaseName
-			? await getLocalizedSpecEntry(entryBaseName, resolvedLocale)
-			: undefined;
+const entry = entryId
+	? await getLocalizedSpecEntry(entryId, resolvedLocale)
+	: entryBaseName
+		? await getLocalizedSpecEntry(entryBaseName, resolvedLocale)
+		: undefined;
 
 if (!entry) {
 	throw new Error(

@@ -112,7 +112,11 @@ function normalizeUrlMessage() {
 	if (successFlag || errorMessage) {
 		currentUrl.searchParams.delete("tiktok");
 		currentUrl.searchParams.delete("tiktok_error");
-		window.history.replaceState({}, "", currentUrl.pathname + currentUrl.search);
+		window.history.replaceState(
+			{},
+			"",
+			currentUrl.pathname + currentUrl.search,
+		);
 	}
 }
 
@@ -145,9 +149,7 @@ function onFileSelected(event: Event) {
 	selectedFile = input.files?.[0] || null;
 	uploadState = "idle";
 	uploadProgress = 0;
-	uploadMessage = selectedFile
-		? `${selectedFile.name} ready to upload.`
-		: "";
+	uploadMessage = selectedFile ? `${selectedFile.name} ready to upload.` : "";
 	publishId = "";
 }
 

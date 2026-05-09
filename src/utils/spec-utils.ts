@@ -1,7 +1,10 @@
-import { getCollection, type CollectionEntry } from "astro:content";
+import { type CollectionEntry, getCollection } from "astro:content";
 import type { SiteLocale } from "./locale-utils";
 
-const getSpecEntryCandidates = (baseName: string, locale: SiteLocale): string[] => {
+const getSpecEntryCandidates = (
+	baseName: string,
+	locale: SiteLocale,
+): string[] => {
 	if (locale === "vi") {
 		return [`${baseName}-vi`, `${baseName}.vi`, baseName];
 	}

@@ -3,8 +3,8 @@ import ArchivePanel from "@components/ArchivePanel.svelte";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
-import { getLocaleFromPathname } from "../utils/locale-utils";
 import { getSortedPostsList } from "../utils/content-utils";
+import { getLocaleFromPathname } from "../utils/locale-utils";
 
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const sortedPostsList = await getSortedPostsList(locale);

@@ -1,5 +1,9 @@
 import type { CollectionEntry } from "astro:content";
-import { DEFAULT_LOCALE, normalizeLocale, type SiteLocale } from "./locale-utils";
+import {
+	DEFAULT_LOCALE,
+	normalizeLocale,
+	type SiteLocale,
+} from "./locale-utils";
 
 const LOCALE_SUFFIX_PATTERN = /(?:[.-])(en|vi)$/i;
 

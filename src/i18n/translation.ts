@@ -1,4 +1,5 @@
 import { siteConfig } from "../config";
+import { normalizeLocale, type SiteLocale } from "../utils/locale-utils";
 import type I18nKey from "./i18nKey";
 import { en } from "./languages/en";
 import { es } from "./languages/es";
@@ -10,7 +11,6 @@ import { tr } from "./languages/tr";
 import { vi } from "./languages/vi";
 import { zh_CN } from "./languages/zh_CN";
 import { zh_TW } from "./languages/zh_TW";
-import { normalizeLocale, type SiteLocale } from "../utils/locale-utils";
 
 export type Translation = {
 	[K in I18nKey]?: string;
@@ -48,10 +48,7 @@ export function getTranslation(lang: string): Translation {
 
 export function i18n(locale: SiteLocale, key: I18nKey): string;
 export function i18n(key: I18nKey): string;
-export function i18n(
-	localeOrKey: SiteLocale | I18nKey,
-	key?: I18nKey,
-): string {
+export function i18n(localeOrKey: SiteLocale | I18nKey, key?: I18nKey): string {
 	if (key) {
 		return getTranslation(normalizeLocale(localeOrKey))[key] || "";
 	}

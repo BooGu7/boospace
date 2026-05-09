@@ -4,8 +4,8 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import ConfigCarrier from "@components/ConfigCarrier.astro";
-import { profileConfig, siteConfig } from "@/config";
 import { getSiteSubtitle } from "@i18n/site-copy";
+import { profileConfig, siteConfig } from "@/config";
 import {
 	AUTO_MODE,
 	BANNER_HEIGHT,
@@ -18,13 +18,13 @@ import {
 } from "../constants/constants";
 import { defaultFavicons } from "../constants/icon";
 import type { Favicon } from "../types/config";
-import { url } from "../utils/url-utils";
 import {
 	getLocaleFromPathname,
-	stripLocaleFromPathname,
 	type SiteLocale,
+	stripLocaleFromPathname,
 	withLocale,
 } from "../utils/locale-utils";
+import { url } from "../utils/url-utils";
 import "katex/dist/katex.css";
 
 // Vercel : Web Analytics and Speed Insights (Astro inject APIs)
@@ -41,7 +41,15 @@ interface Props {
 	alternates?: Partial<Record<SiteLocale, string>>;
 }
 
-let { title, banner, description, lang, setOGTypeArticle, canonicalPath, alternates } = Astro.props;
+let {
+	title,
+	banner,
+	description,
+	lang,
+	setOGTypeArticle,
+	canonicalPath,
+	alternates,
+} = Astro.props;
 const locale = getLocaleFromPathname(Astro.url.pathname);
 
 // apply a class to the body element to decide the height of the banner, only used for initial page load
@@ -79,7 +87,9 @@ const siteLang = lang.replace("_", "-");
 const canonicalUrl = Astro.site
 	? new URL(canonicalPath || Astro.url.pathname, Astro.site).toString()
 	: undefined;
-const isPostRoute = stripLocaleFromPathname(Astro.url.pathname).startsWith("/posts/");
+const isPostRoute = stripLocaleFromPathname(Astro.url.pathname).startsWith(
+	"/posts/",
+);
 const alternatePaths =
 	alternates ||
 	(!isPostRoute

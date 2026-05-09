@@ -1,10 +1,10 @@
 ---
-import type { Page } from "astro";
 import Pagination from "@components/control/Pagination.astro";
 import PostPage from "@components/PostPage.astro";
 import { PAGE_SIZE } from "@constants/constants";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getSortedPosts } from "@utils/content-utils";
+import type { Page } from "astro";
 
 const allBlogPosts = await getSortedPosts("en");
 const lastPage = Math.max(1, Math.ceil(allBlogPosts.length / PAGE_SIZE));
@@ -16,7 +16,7 @@ const page = {
 		prev: undefined,
 		next: lastPage > 1 ? "/en/2/" : undefined,
 	},
-} as Page<any>;
+} as Page;
 ---
 
 <MainGridLayout lang="en" alternates={{ vi: "/", en: "/en/" }}>
