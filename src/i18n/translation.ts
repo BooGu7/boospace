@@ -10,9 +10,10 @@ import { tr } from "./languages/tr";
 import { vi } from "./languages/vi";
 import { zh_CN } from "./languages/zh_CN";
 import { zh_TW } from "./languages/zh_TW";
+import { normalizeLocale, type SiteLocale } from "../utils/locale-utils";
 
 export type Translation = {
-	[K in I18nKey]: string;
+	[K in I18nKey]?: string;
 };
 
 const defaultTranslation = en;
@@ -39,10 +40,21 @@ const map: { [key: string]: Translation } = {
 };
 
 export function getTranslation(lang: string): Translation {
-	return map[lang.toLowerCase()] || defaultTranslation;
+	return {
+		...defaultTranslation,
+		...(map[lang.toLowerCase()] || {}),
+	};
 }
 
-export function i18n(key: I18nKey): string {
+export function i18n(locale: SiteLocale, key: I18nKey): string;
+export function i18n(key: I18nKey): string;
+export function i18n(
+	localeOrKey: SiteLocale | I18nKey,
+	key?: I18nKey,
+): string {
+	if (key) {
+		return getTranslation(normalizeLocale(localeOrKey))[key] || "";
+	}
 	const lang = siteConfig.lang || "en";
-	return getTranslation(lang)[key];
+	return getTranslation(lang)[localeOrKey as I18nKey] || "";
 }

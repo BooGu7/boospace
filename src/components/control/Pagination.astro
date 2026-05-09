@@ -1,6 +1,7 @@
 ---
 import type { Page } from "astro";
 import { Icon } from "astro-icon/components";
+import { getLocaleFromPathname } from "../../utils/locale-utils";
 import { url } from "../../utils/url-utils";
 
 interface Props {
@@ -14,6 +15,7 @@ const { page, style } = Astro.props;
 const HIDDEN = -1;
 
 const className = Astro.props.class;
+const locale = getLocaleFromPathname(Astro.url.pathname);
 
 const ADJ_DIST = 2;
 const VISIBLE = ADJ_DIST * 2 + 1;
@@ -69,7 +71,7 @@ const getPageUrl = (p: number) => {
                 >
                     {p}
                 </div>
-            return <a href={url(getPageUrl(p))} aria-label={`Page ${p}`}
+            return <a href={url(getPageUrl(p), locale)} aria-label={`Page ${p}`}
                 class="btn-card w-11 h-11 rounded-lg overflow-hidden active:scale-[0.85]"
             >{p}</a>
         })}

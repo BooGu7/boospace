@@ -3,8 +3,10 @@ import { onMount } from "svelte";
 
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
+import type { SiteLocale } from "../utils/locale-utils";
 import { getPostUrlBySlug } from "../utils/url-utils";
 
+export let locale: SiteLocale;
 export let tags: string[];
 export let categories: string[];
 export let sortedPosts: Post[] = [];
@@ -86,6 +88,12 @@ onMount(async () => {
 </script>
 
 <div class="card-base px-8 py-6">
+    {#if groups.length === 0}
+        <div class="py-8 text-center">
+            <div class="text-xl font-bold text-90 mb-2">{i18n(locale, I18nKey.noPostsTitle)}</div>
+            <div class="text-50">{i18n(locale, I18nKey.noPostsDescription)}</div>
+        </div>
+    {/if}
     {#each groups as group}
         <div>
             <div class="flex flex-row w-full items-center h-[3.75rem]">
@@ -99,13 +107,13 @@ onMount(async () => {
                     ></div>
                 </div>
                 <div class="w-[70%] md:w-[80%] transition text-left text-50">
-                    {group.posts.length} {i18n(group.posts.length === 1 ? I18nKey.postCount : I18nKey.postsCount)}
+                    {group.posts.length} {i18n(locale, group.posts.length === 1 ? I18nKey.postCount : I18nKey.postsCount)}
                 </div>
             </div>
 
             {#each group.posts as post}
                 <a
-                        href={getPostUrlBySlug(post.slug)}
+                        href={getPostUrlBySlug(post.slug, locale)}
                         aria-label={post.data.title}
                         class="group btn-plain !block h-10 w-full rounded-lg hover:text-[initial]"
                 >

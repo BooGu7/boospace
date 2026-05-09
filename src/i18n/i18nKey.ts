@@ -3,6 +3,9 @@ enum I18nKey {
 	about = "about",
 	archive = "archive",
 	search = "search",
+	language = "language",
+	languageVietnamese = "languageVietnamese",
+	languageEnglish = "languageEnglish",
 
 	tags = "tags",
 	categories = "categories",
@@ -32,6 +35,12 @@ enum I18nKey {
 	author = "author",
 	publishedAt = "publishedAt",
 	license = "license",
+	privacyPolicy = "privacyPolicy",
+	termsOfService = "termsOfService",
+	sitemap = "sitemap",
+	allRightsReserved = "allRightsReserved",
+	noPostsTitle = "noPostsTitle",
+	noPostsDescription = "noPostsDescription",
 }
 
 export default I18nKey;

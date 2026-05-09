@@ -8,11 +8,13 @@ import { Icon } from "astro-icon/components";
 import ImageWrapper from "../components/misc/ImageWrapper.astro";
 import TOC from "../components/widget/TOC.astro";
 import { siteConfig } from "../config";
+import { getBannerCreditText } from "../i18n/site-copy";
 import {
 	BANNER_HEIGHT,
 	BANNER_HEIGHT_EXTEND,
 	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
 } from "../constants/constants";
+import { getLocaleFromPathname, type SiteLocale } from "../utils/locale-utils";
 import Layout from "./Layout.astro";
 
 interface Props {
@@ -22,6 +24,8 @@ interface Props {
 	lang?: string;
 	setOGTypeArticle?: boolean;
 	headings?: MarkdownHeading[];
+	canonicalPath?: string;
+	alternates?: Partial<Record<SiteLocale, string>>;
 }
 
 const {
@@ -31,17 +35,20 @@ const {
 	lang,
 	setOGTypeArticle,
 	headings = [],
+	canonicalPath,
+	alternates,
 } = Astro.props;
 const hasBannerCredit =
 	siteConfig.banner.enable && siteConfig.banner.credit.enable;
 const hasBannerLink = !!siteConfig.banner.credit.url;
+const locale = getLocaleFromPathname(Astro.url.pathname);
 
 const mainPanelTop = siteConfig.banner.enable
 	? `calc(${BANNER_HEIGHT}vh - ${MAIN_PANEL_OVERLAPS_BANNER_HEIGHT}rem)`
 	: "5.5rem";
 ---
 
-<Layout title={title} banner={banner} description={description} lang={lang} setOGTypeArticle={setOGTypeArticle}>
+<Layout title={title} banner={banner} description={description} lang={lang} setOGTypeArticle={setOGTypeArticle} canonicalPath={canonicalPath} alternates={alternates}>
 
 <!-- Navbar -->
 <slot slot="head" name="head"></slot>
@@ -72,7 +79,7 @@ const mainPanelTop = siteConfig.banner.enable
                                    "px-3 right-4 -top-[3.25rem] bg-black/60 hover:bg-black/70 h-9", {"hover:pr-9 active:bg-black/80": hasBannerLink}]}
             >
                 <Icon class="text-white/75 text-[1.25rem] mr-1" name="material-symbols:copyright-outline-rounded" ></Icon>
-                <div class="text-white/75 text-xs">{siteConfig.banner.credit.text}</div>
+                <div class="text-white/75 text-xs">{getBannerCreditText(locale)}</div>
                 <Icon class:list={["transition absolute text-[oklch(0.75_0.14_var(--hue))] right-4 text-[0.75rem] opacity-0",
                     {"group-hover:opacity-100": hasBannerLink}]}
                       name="fa6-solid:arrow-up-right-from-square">

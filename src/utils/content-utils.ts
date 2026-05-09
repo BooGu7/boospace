@@ -2,11 +2,19 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { getCategoryUrl } from "@utils/url-utils.ts";
+import {
+	DEFAULT_LOCALE,
+	isLocaleMatch,
+	type SiteLocale,
+} from "./locale-utils";
 
 // // Retrieve posts and sort them by publication date
-async function getRawSortedPosts() {
+async function getRawSortedPosts(locale: SiteLocale = DEFAULT_LOCALE) {
 	const allBlogPosts = await getCollection("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
+		const matchesLocale = isLocaleMatch(data.lang, locale);
+		return import.meta.env.PROD
+			? data.draft !== true && matchesLocale
+			: matchesLocale;
 	});
 
 	const sorted = allBlogPosts.sort((a, b) => {
@@ -17,8 +25,8 @@ async function getRawSortedPosts() {
 	return sorted;
 }
 
-export async function getSortedPosts() {
-	const sorted = await getRawSortedPosts();
+export async function getSortedPosts(locale: SiteLocale = DEFAULT_LOCALE) {
+	const sorted = await getRawSortedPosts(locale);
 
 	for (let i = 1; i < sorted.length; i++) {
 		sorted[i].data.nextSlug = sorted[i - 1].slug;
@@ -35,8 +43,10 @@ export type PostForList = {
 	slug: string;
 	data: CollectionEntry<"posts">["data"];
 };
-export async function getSortedPostsList(): Promise<PostForList[]> {
-	const sortedFullPosts = await getRawSortedPosts();
+export async function getSortedPostsList(
+	locale: SiteLocale = DEFAULT_LOCALE,
+): Promise<PostForList[]> {
+	const sortedFullPosts = await getRawSortedPosts(locale);
 
 	// delete post.body
 	const sortedPostsList = sortedFullPosts.map((post) => ({
@@ -51,9 +61,14 @@ export type Tag = {
 	count: number;
 };
 
-export async function getTagList(): Promise<Tag[]> {
+export async function getTagList(
+	locale: SiteLocale = DEFAULT_LOCALE,
+): Promise<Tag[]> {
 	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
+		const matchesLocale = isLocaleMatch(data.lang, locale);
+		return import.meta.env.PROD
+			? data.draft !== true && matchesLocale
+			: matchesLocale;
 	});
 
 	const countMap: { [key: string]: number } = {};
@@ -78,14 +93,19 @@ export type Category = {
 	url: string;
 };
 
-export async function getCategoryList(): Promise<Category[]> {
+export async function getCategoryList(
+	locale: SiteLocale = DEFAULT_LOCALE,
+): Promise<Category[]> {
 	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
+		const matchesLocale = isLocaleMatch(data.lang, locale);
+		return import.meta.env.PROD
+			? data.draft !== true && matchesLocale
+			: matchesLocale;
 	});
 	const count: { [key: string]: number } = {};
 	allBlogPosts.forEach((post: { data: { category: string | null } }) => {
 		if (!post.data.category) {
-			const ucKey = i18n(I18nKey.uncategorized);
+			const ucKey = i18n(locale, I18nKey.uncategorized);
 			count[ucKey] = count[ucKey] ? count[ucKey] + 1 : 1;
 			return;
 		}
@@ -107,8 +127,29 @@ export async function getCategoryList(): Promise<Category[]> {
 		ret.push({
 			name: c,
 			count: count[c],
-			url: getCategoryUrl(c),
+			url: getCategoryUrl(c, locale),
 		});
 	}
 	return ret;
+}
+
+export async function getTranslatedPostSlug(
+	slug: string,
+	targetLocale: SiteLocale,
+): Promise<string | null> {
+	const allBlogPosts = await getCollection("posts");
+	const currentEntry = allBlogPosts.find((entry) => entry.slug === slug);
+
+	if (!currentEntry?.data.translationKey) {
+		return null;
+	}
+
+	const translatedEntry = allBlogPosts.find(
+		(entry) =>
+			entry.slug !== slug &&
+			entry.data.translationKey === currentEntry.data.translationKey &&
+			isLocaleMatch(entry.data.lang, targetLocale),
+	);
+
+	return translatedEntry?.slug || null;
 }

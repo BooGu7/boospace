@@ -6,6 +6,9 @@ export const vi: Translation = {
 	[Key.about]: "Thông tin",
 	[Key.archive]: "Bài viết",
 	[Key.search]: "Tìm kiếm",
+	[Key.language]: "Ngôn ngữ",
+	[Key.languageVietnamese]: "VN",
+	[Key.languageEnglish]: "EN",
 
 	[Key.tags]: "Thẻ",
 	[Key.categories]: "Danh mục",
@@ -35,4 +38,11 @@ export const vi: Translation = {
 	[Key.author]: "Tác giả",
 	[Key.publishedAt]: "Đăng vào lúc",
 	[Key.license]: "Giấy phép bản quyền",
+	[Key.privacyPolicy]: "Chính sách bảo mật",
+	[Key.termsOfService]: "Điều khoản dịch vụ",
+	[Key.sitemap]: "Sơ đồ trang",
+	[Key.allRightsReserved]: "Mọi quyền được bảo lưu.",
+	[Key.noPostsTitle]: "Bài viết đang được cập nhật",
+	[Key.noPostsDescription]:
+		"Hiện chưa có bài viết phù hợp với ngôn ngữ này. Vui lòng quay lại sau.",
 };

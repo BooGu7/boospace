@@ -6,6 +6,9 @@ export const en: Translation = {
 	[Key.about]: "About",
 	[Key.archive]: "Archive",
 	[Key.search]: "Search",
+	[Key.language]: "Language",
+	[Key.languageVietnamese]: "VN",
+	[Key.languageEnglish]: "EN",
 
 	[Key.tags]: "Tags",
 	[Key.categories]: "Categories",
@@ -35,4 +38,11 @@ export const en: Translation = {
 	[Key.author]: "Author",
 	[Key.publishedAt]: "Published at",
 	[Key.license]: "License",
+	[Key.privacyPolicy]: "Privacy Policy",
+	[Key.termsOfService]: "Terms of Service",
+	[Key.sitemap]: "Sitemap",
+	[Key.allRightsReserved]: "All Rights Reserved.",
+	[Key.noPostsTitle]: "English posts are on the way",
+	[Key.noPostsDescription]:
+		"We only show translated content here. Check back later for the first English articles.",
 };

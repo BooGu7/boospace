@@ -2,10 +2,12 @@
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import Icon from "@iconify/svelte";
+import type { SiteLocale } from "@utils/locale-utils";
 import { url } from "@utils/url-utils.ts";
 import { onMount } from "svelte";
 import type { SearchResult } from "@/global";
 
+export let locale: SiteLocale;
 let keywordDesktop = "";
 let keywordMobile = "";
 let result: SearchResult[] = [];
@@ -15,7 +17,7 @@ let initialized = false;
 
 const fakeResult: SearchResult[] = [
 	{
-		url: url("/"),
+		url: url("/", locale),
 		meta: {
 			title: "This Is a Fake Search Result",
 		},
@@ -23,7 +25,7 @@ const fakeResult: SearchResult[] = [
 			"Because the search cannot work in the <mark>dev</mark> environment.",
 	},
 	{
-		url: url("/"),
+		url: url("/", locale),
 		meta: {
 			title: "If You Want to Test the Search",
 		},
@@ -45,6 +47,11 @@ const setPanelVisibility = (show: boolean, isDesktop: boolean): void => {
 	} else {
 		panel.classList.add("float-panel-closed");
 	}
+};
+
+const isLocaleResult = (item: SearchResult) => {
+	const href = item.url || "";
+	return locale === "en" ? href.startsWith("/en/") : !href.startsWith("/en/");
 };
 
 const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
@@ -75,7 +82,7 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 			console.error("Pagefind is not available in production environment.");
 		}
 
-		result = searchResults;
+		result = searchResults.filter(isLocaleResult);
 		setPanelVisibility(result.length > 0, isDesktop);
 	} catch (error) {
 		console.error("Search error:", error);
@@ -166,7 +173,7 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
       dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
   ">
         <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
-        <input placeholder="Search" bind:value={keywordMobile}
+        <input placeholder={i18n(locale, I18nKey.search)} bind:value={keywordMobile}
                class="pl-10 absolute inset-0 text-sm bg-transparent outline-0
                focus:w-60 text-black/50 dark:text-white/50"
         >

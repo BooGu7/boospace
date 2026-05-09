@@ -1,5 +1,10 @@
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
+import {
+	type SiteLocale,
+	DEFAULT_LOCALE,
+	withLocale,
+} from "./locale-utils";
 
 export function pathsEqual(path1: string, path2: string) {
 	const normalizedPath1 = path1.replace(/^\/|\/$/g, "").toLowerCase();
@@ -12,23 +17,36 @@ function joinUrl(...parts: string[]): string {
 	return joined.replace(/\/+/g, "/");
 }
 
-export function getPostUrlBySlug(slug: string): string {
-	return url(`/posts/${slug}/`);
+export function getPostUrlBySlug(
+	slug: string,
+	locale: SiteLocale = DEFAULT_LOCALE,
+): string {
+	return url(`/posts/${slug}/`, locale);
 }
 
-export function getTagUrl(tag: string): string {
-	if (!tag) return url("/archive/");
-	return url(`/archive/?tag=${encodeURIComponent(tag.trim())}`);
+export function getTagUrl(
+	tag: string,
+	locale: SiteLocale = DEFAULT_LOCALE,
+): string {
+	if (!tag) return url("/archive/", locale);
+	return url(`/archive/?tag=${encodeURIComponent(tag.trim())}`, locale);
 }
 
-export function getCategoryUrl(category: string | null): string {
+export function getCategoryUrl(
+	category: string | null,
+	locale: SiteLocale = DEFAULT_LOCALE,
+): string {
 	if (
 		!category ||
 		category.trim() === "" ||
-		category.trim().toLowerCase() === i18n(I18nKey.uncategorized).toLowerCase()
+		category.trim().toLowerCase() ===
+			i18n(locale, I18nKey.uncategorized).toLowerCase()
 	)
-		return url("/archive/?uncategorized=true");
-	return url(`/archive/?category=${encodeURIComponent(category.trim())}`);
+		return url("/archive/?uncategorized=true", locale);
+	return url(
+		`/archive/?category=${encodeURIComponent(category.trim())}`,
+		locale,
+	);
 }
 
 export function getDir(path: string): string {
@@ -39,6 +57,6 @@ export function getDir(path: string): string {
 	return path.substring(0, lastSlashIndex + 1);
 }
 
-export function url(path: string) {
-	return joinUrl("", import.meta.env.BASE_URL, path);
+export function url(path: string, locale: SiteLocale = DEFAULT_LOCALE) {
+	return joinUrl("", import.meta.env.BASE_URL, withLocale(path, locale));
 }

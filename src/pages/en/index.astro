@@ -1,0 +1,31 @@
+---
+import type { Page } from "astro";
+import Pagination from "@components/control/Pagination.astro";
+import PostPage from "@components/PostPage.astro";
+import { PAGE_SIZE } from "@constants/constants";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getSortedPosts } from "@utils/content-utils";
+
+const allBlogPosts = await getSortedPosts("en");
+const lastPage = Math.max(1, Math.ceil(allBlogPosts.length / PAGE_SIZE));
+const page = {
+	data: allBlogPosts.slice(0, PAGE_SIZE),
+	currentPage: 1,
+	lastPage,
+	url: {
+		prev: undefined,
+		next: lastPage > 1 ? "/en/2/" : undefined,
+	},
+} as Page<any>;
+---
+
+<MainGridLayout lang="en" alternates={{ vi: "/", en: "/en/" }}>
+	<PostPage page={page}></PostPage>
+	{lastPage > 1 && (
+		<Pagination
+			class="mx-auto onload-animation"
+			page={page}
+			style={`animation-delay: calc(var(--content-delay) + ${page.data.length * 50}ms)`}
+		></Pagination>
+	)}
+</MainGridLayout>
