@@ -12,7 +12,7 @@ export const siteConfig: SiteConfig = {
 	subtitle: "Chia sẻ giải pháp thực tế cho người yêu tối giản công việc",
 	lang: "vi", // Language code, e.g. 'en', 'zh_CN', 'ja', etc.
 	themeColor: {
-		hue: 200, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
+		hue: 180, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
 		fixed: true, // Hide the theme color picker for visitors
 	},
 	banner: {
@@ -51,12 +51,17 @@ export const navBarConfig: NavBarConfig = {
 	links: [
 		LinkPreset.Home,
 		LinkPreset.Archive,
-		LinkPreset.About,
 		{
-			name: "AI Workflow (n8n)",
+			name: "AutoFlow",
 			url: "https://n8n.boospace.tech", // Internal links should not include the base path, as it is automatically added
-			external: true, // Show an external link icon and will open in a new tab
+			external: false, // Show an external link icon and will open in a new tab
 		},
+		{
+			name: "Product",
+			url: "https://product.boospace.tech", // Internal links should not include the base path, as it is automatically added
+			external: false, // Show an external link icon and will open in a new tab
+		},
+		LinkPreset.About
 	],
 };
 
