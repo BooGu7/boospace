@@ -1,0 +1,46 @@
+08:17:22 [types] Generated 1ms
+08:17:23 [content] Syncing content
+08:17:23 [content] Astro config changed
+08:17:23 [content] Clearing content store
+08:17:24 [content] Synced content
+
+ astro  v5.13.3 ready in 3002 ms
+
+┃ Local    http://localhost:3000/
+┃ Network  use --host to expose
+
+08:17:24 watching for file changes...
+08:17:46 [200] /login/ 3284ms
+08:17:47 [vite] [32m✨ new dependencies optimized: [33m@swup/astro/serialise, @swup/astro/idle, @swup/astro/client/Swup, @swup/astro/client/SwupA11yPlugin, @swup/astro/client/SwupPreloadPlugin, @swup/astro/client/SwupScrollPlugin, @swup/astro/client/SwupHeadPlugin, @swup/astro/client/SwupScriptsPlugin[32m[39m
+08:17:47 [vite] [32m✨ optimized dependencies changed. reloading[39m
+08:17:50 [200] /login/ 109ms
+08:55:49 [watch] src/assets/images/banner_default.png
+09:01:06 [watch] src/pages/posts/[...slug].astro
+09:01:06 [watch] src/pages/posts/[...slug].astro
+09:14:01 [watch] src/content/posts/developer/dev/test-banner-fallback.md
+09:14:01 [glob-loader] Reloaded data from developer/dev/test-banner-fallback.md
+09:14:09 [200] /posts/developer/dev/test-banner-fallback/ 525ms
+09:14:09 [200] /posts/developer/dev/test-banner-fallback/ 525ms
+09:14:10 [200] /_image/ 227ms
+09:14:15 [200] /archive/ 42ms
+09:14:18 [200] / 60ms
+09:14:19 [200] /_image/ 138ms
+09:14:20 [200] /_image/ 208ms
+09:14:20 [200] /_image/ 267ms
+09:14:20 [200] /_image/ 264ms
+09:14:23 [200] /posts/developer/dev/test-banner-fallback/ 38ms
+09:14:26 [200] /archive/ 34ms
+09:14:31 [200] /about/ 49ms
+09:14:34 [200] / 46ms
+09:16:37 [watch] src/components/PostCard.astro
+09:16:37 [watch] src/components/PostCard.astro
+09:16:39 [200] / 403ms
+09:16:45 [200] / 58ms
+09:17:06 [200] /posts/developer/dev/test-banner-fallback/ 33ms
+09:17:07 [200] / 70ms
+09:17:11 [200] /posts/developer/dev/test-banner-fallback/ 64ms
+09:21:12 [200] / 40ms
+09:21:19 [200] /archive/ 34ms
+09:21:22 [200] /about/ 58ms
+09:21:57 [watch] src/content/posts/developer/dev/test-banner-fallback.md
+09:21:57 [watch] src/content/posts/developer/dev/test-banner-fallback.md

@@ -21,13 +21,17 @@ const locale = getLocaleFromPathname(Astro.url.pathname);
 export async function getStaticPaths() {
 	const blogEntries = await getSortedPosts("vi");
 	return blogEntries.map((entry) => ({
-		params: { slug: (entry.data.slug?.trim() ? entry.data.slug.trim() : entry.slug) },
+		params: {
+			slug: entry.data.slug?.trim() ? entry.data.slug.trim() : entry.slug,
+		},
 		props: { entry },
 	}));
 }
 
 const { entry } = Astro.props;
-const canonicalSlug = entry.data.slug?.trim() ? entry.data.slug.trim() : entry.slug;
+const canonicalSlug = entry.data.slug?.trim()
+	? entry.data.slug.trim()
+	: entry.slug;
 const { Content, headings } = await entry.render();
 
 const { remarkPluginFrontmatter } = await entry.render();
