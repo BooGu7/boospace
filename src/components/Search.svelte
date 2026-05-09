@@ -51,7 +51,14 @@ const setPanelVisibility = (show: boolean, isDesktop: boolean): void => {
 
 const isLocaleResult = (item: SearchResult) => {
 	const href = item.url || "";
-	return locale === "en" ? href.startsWith("/en/") : !href.startsWith("/en/");
+	if (locale === "en") {
+		return href.startsWith("/en/");
+	}
+	// Prefer /vn/ for Vietnamese, but keep "/" results compatible too.
+	return (
+		href.startsWith("/vn/") ||
+		(!href.startsWith("/en/") && !href.startsWith("/vn/"))
+	);
 };
 
 const search = async (keyword: string, isDesktop: boolean): Promise<void> => {

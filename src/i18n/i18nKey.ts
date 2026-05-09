@@ -2,6 +2,7 @@ enum I18nKey {
 	home = "home",
 	about = "about",
 	archive = "archive",
+	aiWorkflow = "aiWorkflow",
 	search = "search",
 	language = "language",
 	languageVietnamese = "languageVietnamese",

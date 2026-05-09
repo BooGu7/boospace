@@ -5,6 +5,7 @@ export const vi: Translation = {
 	[Key.home]: "Trang chủ",
 	[Key.about]: "Thông tin",
 	[Key.archive]: "Bài viết",
+	[Key.aiWorkflow]: "AI Workflow (n8n)",
 	[Key.search]: "Tìm kiếm",
 	[Key.language]: "Ngôn ngữ",
 	[Key.languageVietnamese]: "VN",

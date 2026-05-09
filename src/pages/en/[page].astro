@@ -33,7 +33,7 @@ export const getStaticPaths = (async () => {
 const { page } = Astro.props;
 ---
 
-<MainGridLayout lang="en" alternates={{ vi: "/", en: "/en/" }}>
+<MainGridLayout lang="en" alternates={{ vi: "/vn/", en: "/en/" }}>
 	<PostPage page={page}></PostPage>
 	<Pagination
 		class="mx-auto onload-animation"

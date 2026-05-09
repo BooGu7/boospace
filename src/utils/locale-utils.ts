@@ -11,7 +11,13 @@ export function normalizeLocale(locale?: string | null): SiteLocale {
 }
 
 export function getLocaleFromPathname(pathname: string): SiteLocale {
-	return pathname === "/en" || pathname.startsWith("/en/") ? "en" : "vi";
+	if (pathname === "/en" || pathname.startsWith("/en/")) {
+		return "en";
+	}
+	if (pathname === "/vn" || pathname.startsWith("/vn/")) {
+		return "vi";
+	}
+	return "vi";
 }
 
 export function stripLocaleFromPathname(pathname: string): string {
@@ -19,6 +25,13 @@ export function stripLocaleFromPathname(pathname: string): string {
 		return "/";
 	}
 	if (pathname.startsWith("/en/")) {
+		const stripped = pathname.slice(3);
+		return stripped.startsWith("/") ? stripped : `/${stripped}`;
+	}
+	if (pathname === "/vn") {
+		return "/";
+	}
+	if (pathname.startsWith("/vn/")) {
 		const stripped = pathname.slice(3);
 		return stripped.startsWith("/") ? stripped : `/${stripped}`;
 	}
@@ -40,7 +53,7 @@ export function withLocale(pathname: string, locale: SiteLocale): string {
 	if (locale === "en") {
 		return normalized === "/" ? "/en/" : `/en${normalized}`;
 	}
-	return normalized;
+	return normalized === "/" ? "/vn/" : `/vn${normalized}`;
 }
 
 export function isLocaleMatch(

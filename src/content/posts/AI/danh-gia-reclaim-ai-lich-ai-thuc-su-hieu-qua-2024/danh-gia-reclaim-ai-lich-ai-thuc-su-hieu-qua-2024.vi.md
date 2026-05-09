@@ -4,7 +4,6 @@ published: 2024-05-15
 slug: "ai/danh-gia-reclaim-ai-lich-ai-thuc-su-hieu-qua-2024"
 lang: vi
 description: "Đánh giá Reclaim AI: Công cụ lịch AI thông minh tự động sắp xếp lịch, bảo vệ thời gian tập trung và tích hợp vào luồng làm việc của bạn. Nó có đáng thử không?"
-image: ./reclaim-ai-review-banner.png
 tags:
   - năng suất
   - công cụ AI

@@ -1,0 +1,26 @@
+---
+import Pagination from "@components/control/Pagination.astro";
+import PostPage from "@components/PostPage.astro";
+import { PAGE_SIZE } from "@constants/constants";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getSortedPosts } from "@utils/content-utils";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths = (async ({ paginate }) => {
+	const allBlogPosts = await getSortedPosts("vi");
+	return paginate(allBlogPosts, { pageSize: PAGE_SIZE });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const len = page.data.length;
+---
+
+<MainGridLayout lang="vi" alternates={{ vi: "/vn/", en: "/en/" }}>
+	<PostPage page={page}></PostPage>
+	<Pagination
+		class="mx-auto onload-animation"
+		page={page}
+		style={`animation-delay: calc(var(--content-delay) + ${len * 50}ms)`}
+	></Pagination>
+</MainGridLayout>
+

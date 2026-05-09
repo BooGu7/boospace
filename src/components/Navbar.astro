@@ -2,6 +2,8 @@
 import { Icon } from "astro-icon/components";
 import { navBarConfig, siteConfig } from "../config";
 import { getLinkPreset } from "../constants/link-presets";
+import I18nKey from "../i18n/i18nKey";
+import { i18n } from "../i18n/translation";
 import { LinkPreset, type NavBarLink } from "../types/config";
 import { getLocaleFromPathname } from "../utils/locale-utils";
 import { url } from "../utils/url-utils";
@@ -19,6 +21,13 @@ let links: NavBarLink[] = navBarConfig.links.map(
 	(item: NavBarLink | LinkPreset): NavBarLink => {
 		if (typeof item === "number") {
 			return linkPresets[item];
+		}
+		// Allow locale-aware naming for custom links.
+		if (item.external && item.url === "https://n8n.boospace.tech") {
+			return {
+				...item,
+				name: i18n(locale, I18nKey.aiWorkflow),
+			};
 		}
 		return item;
 	},
