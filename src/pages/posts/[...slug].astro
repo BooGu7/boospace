@@ -5,6 +5,7 @@ import Markdown from "@components/misc/Markdown.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getEntryLocale } from "@utils/content-naming";
 import { getSortedPosts, getTranslatedPostSlug } from "@utils/content-utils";
 import { getLocaleFromPathname, type SiteLocale } from "@utils/locale-utils";
 import { getDir, getPostUrlBySlug } from "@utils/url-utils";
@@ -12,7 +13,7 @@ import { Icon } from "astro-icon/components";
 import { licenseConfig } from "src/config";
 import ImageWrapper from "../../components/misc/ImageWrapper.astro";
 import PostMetadata from "../../components/PostMeta.astro";
-import { profileConfig, siteConfig } from "../../config";
+import { profileConfig } from "../../config";
 import { formatDateToYYYYMMDD } from "../../utils/date-utils";
 
 const locale = getLocaleFromPathname(Astro.url.pathname);
@@ -45,9 +46,7 @@ const jsonLd = {
 		url: Astro.site,
 	},
 	datePublished: formatDateToYYYYMMDD(entry.data.published),
-	inLanguage: entry.data.lang
-		? entry.data.lang.replace("_", "-")
-		: siteConfig.lang.replace("_", "-"),
+	inLanguage: getEntryLocale(entry).replace("_", "-"),
 	// TODO include cover image here
 };
 const translatedSlug = await getTranslatedPostSlug(entry.slug, locale === "vi" ? "en" : "vi");

@@ -3,17 +3,20 @@ import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { getCategoryUrl } from "@utils/url-utils.ts";
 import {
+	getEntryLocale,
+	getEntryTranslationKey,
+} from "./content-naming";
+import {
 	DEFAULT_LOCALE,
-	isLocaleMatch,
 	type SiteLocale,
 } from "./locale-utils";
 
 // // Retrieve posts and sort them by publication date
 async function getRawSortedPosts(locale: SiteLocale = DEFAULT_LOCALE) {
-	const allBlogPosts = await getCollection("posts", ({ data }) => {
-		const matchesLocale = isLocaleMatch(data.lang, locale);
+	const allBlogPosts = await getCollection("posts", (entry) => {
+		const matchesLocale = getEntryLocale(entry) === locale;
 		return import.meta.env.PROD
-			? data.draft !== true && matchesLocale
+			? entry.data.draft !== true && matchesLocale
 			: matchesLocale;
 	});
 
@@ -64,10 +67,10 @@ export type Tag = {
 export async function getTagList(
 	locale: SiteLocale = DEFAULT_LOCALE,
 ): Promise<Tag[]> {
-	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		const matchesLocale = isLocaleMatch(data.lang, locale);
+	const allBlogPosts = await getCollection<"posts">("posts", (entry) => {
+		const matchesLocale = getEntryLocale(entry) === locale;
 		return import.meta.env.PROD
-			? data.draft !== true && matchesLocale
+			? entry.data.draft !== true && matchesLocale
 			: matchesLocale;
 	});
 
@@ -96,10 +99,10 @@ export type Category = {
 export async function getCategoryList(
 	locale: SiteLocale = DEFAULT_LOCALE,
 ): Promise<Category[]> {
-	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		const matchesLocale = isLocaleMatch(data.lang, locale);
+	const allBlogPosts = await getCollection<"posts">("posts", (entry) => {
+		const matchesLocale = getEntryLocale(entry) === locale;
 		return import.meta.env.PROD
-			? data.draft !== true && matchesLocale
+			? entry.data.draft !== true && matchesLocale
 			: matchesLocale;
 	});
 	const count: { [key: string]: number } = {};
@@ -140,15 +143,16 @@ export async function getTranslatedPostSlug(
 	const allBlogPosts = await getCollection("posts");
 	const currentEntry = allBlogPosts.find((entry) => entry.slug === slug);
 
-	if (!currentEntry?.data.translationKey) {
+	if (!currentEntry) {
 		return null;
 	}
+	const translationKey = getEntryTranslationKey(currentEntry);
 
 	const translatedEntry = allBlogPosts.find(
 		(entry) =>
 			entry.slug !== slug &&
-			entry.data.translationKey === currentEntry.data.translationKey &&
-			isLocaleMatch(entry.data.lang, targetLocale),
+			getEntryTranslationKey(entry) === translationKey &&
+			getEntryLocale(entry) === targetLocale,
 	);
 
 	return translatedEntry?.slug || null;

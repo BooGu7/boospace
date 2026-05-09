@@ -5,6 +5,7 @@ import Markdown from "@components/misc/Markdown.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getEntryLocale } from "@utils/content-naming";
 import { getSortedPosts, getTranslatedPostSlug } from "@utils/content-utils";
 import type { SiteLocale } from "@utils/locale-utils";
 import { getDir, getPostUrlBySlug } from "@utils/url-utils";
@@ -43,7 +44,7 @@ const jsonLd = {
 		url: Astro.site,
 	},
 	datePublished: formatDateToYYYYMMDD(entry.data.published),
-	inLanguage: "en",
+	inLanguage: getEntryLocale(entry).replace("_", "-"),
 };
 
 const translatedSlug = await getTranslatedPostSlug(entry.slug, "vi");

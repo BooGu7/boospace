@@ -1,10 +1,13 @@
 ---
-import { getEntry, render } from "astro:content";
+import { render } from "astro:content";
 import Markdown from "@components/misc/Markdown.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getLocaleFromPathname } from "@utils/locale-utils";
+import { getLocalizedSpecEntry } from "@utils/spec-utils";
 
 interface Props {
-	entryId: string;
+	entryId?: string;
+	entryBaseName?: string;
 	title: string;
 	description?: string;
 	lang?: string;
@@ -15,6 +18,7 @@ interface Props {
 
 const {
 	entryId,
+	entryBaseName,
 	title,
 	description = title,
 	lang,
@@ -23,10 +27,18 @@ const {
 	alternates,
 } = Astro.props;
 
-const entry = await getEntry("spec", entryId);
+const resolvedLocale = getLocaleFromPathname(Astro.url.pathname);
+const entry =
+	entryId
+		? await getLocalizedSpecEntry(entryId, resolvedLocale)
+		: entryBaseName
+			? await getLocalizedSpecEntry(entryBaseName, resolvedLocale)
+			: undefined;
 
 if (!entry) {
-	throw new Error(`Spec page content not found: ${entryId}`);
+	throw new Error(
+		`Spec page content not found: ${entryBaseName || entryId || "unknown"}`,
+	);
 }
 
 const { Content, headings } = await render(entry);
