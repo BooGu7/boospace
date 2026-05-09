@@ -21,12 +21,13 @@ const locale = getLocaleFromPathname(Astro.url.pathname);
 export async function getStaticPaths() {
 	const blogEntries = await getSortedPosts("vi");
 	return blogEntries.map((entry) => ({
-		params: { slug: entry.slug },
+		params: { slug: (entry.data.slug?.trim() ? entry.data.slug.trim() : entry.slug) },
 		props: { entry },
 	}));
 }
 
 const { entry } = Astro.props;
+const canonicalSlug = entry.data.slug?.trim() ? entry.data.slug.trim() : entry.slug;
 const { Content, headings } = await entry.render();
 
 const { remarkPluginFrontmatter } = await entry.render();
@@ -54,7 +55,7 @@ const translatedSlug = await getTranslatedPostSlug(
 	locale === "vi" ? "en" : "vi",
 );
 const alternates: Partial<Record<SiteLocale, string>> = {
-	vi: getPostUrlBySlug(entry.slug, "vi"),
+	vi: getPostUrlBySlug(canonicalSlug, "vi"),
 };
 if (translatedSlug) {
 	alternates.en = getPostUrlBySlug(translatedSlug, "en");
@@ -130,7 +131,7 @@ if (translatedSlug) {
                 <Content />
             </Markdown>
 
-            {licenseConfig.enable && <License title={entry.data.title} slug={entry.slug} pubDate={entry.data.published} class="mb-6 rounded-xl license-container onload-animation"></License>}
+            {licenseConfig.enable && <License title={entry.data.title} slug={canonicalSlug} pubDate={entry.data.published} class="mb-6 rounded-xl license-container onload-animation"></License>}
 
         </div>
     </div>

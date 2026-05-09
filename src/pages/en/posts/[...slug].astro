@@ -19,13 +19,14 @@ import { formatDateToYYYYMMDD } from "../../../utils/date-utils";
 export async function getStaticPaths() {
 	const blogEntries = await getSortedPosts("en");
 	return blogEntries.map((entry) => ({
-		params: { slug: entry.slug },
+		params: { slug: (entry.data.slug?.trim() ? entry.data.slug.trim() : entry.slug) },
 		props: { entry },
 	}));
 }
 
 const locale = "en" as const;
 const { entry } = Astro.props;
+const canonicalSlug = entry.data.slug?.trim() ? entry.data.slug.trim() : entry.slug;
 const { Content, headings } = await entry.render();
 const { remarkPluginFrontmatter } = await entry.render();
 const hasCustomCover =
@@ -49,7 +50,7 @@ const jsonLd = {
 
 const translatedSlug = await getTranslatedPostSlug(entry.slug, "vi");
 const alternates: Partial<Record<SiteLocale, string>> = {
-	en: getPostUrlBySlug(entry.slug, "en"),
+	en: getPostUrlBySlug(canonicalSlug, "en"),
 };
 if (translatedSlug) {
 	alternates.vi = getPostUrlBySlug(translatedSlug, "vi");

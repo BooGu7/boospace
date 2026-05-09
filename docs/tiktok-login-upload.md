@@ -1,5 +1,9 @@
 # TikTok Login And Upload Flow
 
+For the full maintenance guide, read:
+
+- `docs/tiktok-integration-handbook.md`
+
 The `/login/` page depends on server-side Vercel functions under `api/tiktok/*`.
 
 Because the Astro site still builds static HTML, the TikTok auth/upload flow does not run inside plain `pnpm dev` or `pnpm preview` alone. Use a Vercel deployment or `vercel dev` when testing the live OAuth flow locally.

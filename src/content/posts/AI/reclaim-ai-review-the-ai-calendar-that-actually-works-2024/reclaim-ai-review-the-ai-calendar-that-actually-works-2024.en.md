@@ -1,14 +1,16 @@
 ---
 title: "Reclaim AI Review: The AI Calendar That Actually Works (2024)"
-published: "2024-05-15"
+published: 2024-05-15
+slug: "ai/reclaim-ai-review-the-ai-calendar-that-actually-works-2024"
+lang: en
 description: "Reclaim AI review: How this smart calendar automates scheduling, protects focus time, and integrates with your workflow. Is it worth trying?"
 image: ./reclaim-ai-review-banner.png
 tags:
-  * productivity
-  * ai-tools
-  * calendar-management
-  * time-blocking
-  * workflow-automation
+  - productivity
+  - ai-tools
+  - calendar-management
+  - time-blocking
+  - workflow-automation
 category: AI
 draft: false
 ---

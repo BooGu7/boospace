@@ -5,6 +5,10 @@ import { getCategoryUrl } from "@utils/url-utils.ts";
 import { getEntryLocale, getEntryTranslationKey } from "./content-naming";
 import { DEFAULT_LOCALE, type SiteLocale } from "./locale-utils";
 
+function getCanonicalSlug(entry: CollectionEntry<"posts">): string {
+	return entry.data.slug?.trim() ? entry.data.slug.trim() : entry.slug;
+}
+
 // // Retrieve posts and sort them by publication date
 async function getRawSortedPosts(locale: SiteLocale = DEFAULT_LOCALE) {
 	const allBlogPosts = await getCollection("posts", (entry) => {
@@ -26,11 +30,11 @@ export async function getSortedPosts(locale: SiteLocale = DEFAULT_LOCALE) {
 	const sorted = await getRawSortedPosts(locale);
 
 	for (let i = 1; i < sorted.length; i++) {
-		sorted[i].data.nextSlug = sorted[i - 1].slug;
+		sorted[i].data.nextSlug = getCanonicalSlug(sorted[i - 1]);
 		sorted[i].data.nextTitle = sorted[i - 1].data.title;
 	}
 	for (let i = 0; i < sorted.length - 1; i++) {
-		sorted[i].data.prevSlug = sorted[i + 1].slug;
+		sorted[i].data.prevSlug = getCanonicalSlug(sorted[i + 1]);
 		sorted[i].data.prevTitle = sorted[i + 1].data.title;
 	}
 
@@ -47,7 +51,7 @@ export async function getSortedPostsList(
 
 	// delete post.body
 	const sortedPostsList = sortedFullPosts.map((post) => ({
-		slug: post.slug,
+		slug: getCanonicalSlug(post),
 		data: post.data,
 	}));
 
@@ -149,5 +153,5 @@ export async function getTranslatedPostSlug(
 			getEntryLocale(entry) === targetLocale,
 	);
 
-	return translatedEntry?.slug || null;
+	return translatedEntry ? getCanonicalSlug(translatedEntry) : null;
 }
