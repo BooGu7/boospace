@@ -3,7 +3,7 @@ title: "Copy.ai Review: The AI-Powered GTM Platform for Sales & Marketing Teams 
 
 published: 2024-05-15
 
-slug: "AI/copy-ai-review-the-ai-powered-gtm-platform-for-sales-marketing-teams-2024"
+slug: "AI/copyai-review-the-ai-powered-gtm-platform-for-sales-marketing-teams-2024"
 
 lang: en
 
