@@ -54,14 +54,14 @@ export const navBarConfig: NavBarConfig = {
 		{
 			name: "AutoFlow",
 			url: "https://n8n.boospace.tech", // Internal links should not include the base path, as it is automatically added
-			external: false, // Show an external link icon and will open in a new tab
+			external: true, // Show an external link icon and will open in a new tab
 		},
 		{
 			name: "Product",
 			url: "https://product.boospace.tech", // Internal links should not include the base path, as it is automatically added
-			external: false, // Show an external link icon and will open in a new tab
+			external: true, // Show an external link icon and will open in a new tab
 		},
-		LinkPreset.About
+		LinkPreset.About,
 	],
 };
 

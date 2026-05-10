@@ -6,7 +6,11 @@ import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getEntryLocale } from "@utils/content-naming";
-import { getSortedPosts, getTranslatedPostSlug } from "@utils/content-utils";
+import {
+	getCanonicalSlug,
+	getSortedPosts,
+	getTranslatedPostSlug,
+} from "@utils/content-utils";
 import type { SiteLocale } from "@utils/locale-utils";
 import { getDir, getPostUrlBySlug } from "@utils/url-utils";
 import { Icon } from "astro-icon/components";
@@ -20,7 +24,7 @@ export async function getStaticPaths() {
 	const blogEntries = await getSortedPosts("en");
 	return blogEntries.map((entry) => ({
 		params: {
-			slug: entry.data.slug?.trim() ? entry.data.slug.trim() : entry.slug,
+			slug: getCanonicalSlug(entry),
 		},
 		props: { entry },
 	}));
@@ -28,9 +32,7 @@ export async function getStaticPaths() {
 
 const locale = "en" as const;
 const { entry } = Astro.props;
-const canonicalSlug = entry.data.slug?.trim()
-	? entry.data.slug.trim()
-	: entry.slug;
+const canonicalSlug = getCanonicalSlug(entry);
 const { Content, headings } = await entry.render();
 const { remarkPluginFrontmatter } = await entry.render();
 const hasCustomCover =
@@ -52,7 +54,7 @@ const jsonLd = {
 	inLanguage: getEntryLocale(entry).replace("_", "-"),
 };
 
-const translatedSlug = await getTranslatedPostSlug(entry.slug, "vi");
+const translatedSlug = await getTranslatedPostSlug(canonicalSlug, "vi");
 const alternates: Partial<Record<SiteLocale, string>> = {
 	en: getPostUrlBySlug(canonicalSlug, "en"),
 };

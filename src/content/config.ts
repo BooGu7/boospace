@@ -12,6 +12,8 @@ const postsCollection = defineCollection({
 		category: z.string().optional().nullable().default(""),
 		lang: z.string().optional().default(""),
 		translationKey: z.string().optional().default(""),
+		/** Public URL path segment(s); use when `slug` must be unique per file (e.g. translations). */
+		pathSlug: z.string().optional().default(""),
 		slug: z.string().optional(),
 
 		/* For internal use */

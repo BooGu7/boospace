@@ -358,7 +358,10 @@ export async function exchangeCodeForToken(code, config) {
 
 	if (!ok) {
 		throw new Error(
-			extractTikTokErrorMessage(payload, `TikTok token exchange failed (${status}).`),
+			extractTikTokErrorMessage(
+				payload,
+				`TikTok token exchange failed (${status}).`,
+			),
 		);
 	}
 
@@ -387,7 +390,10 @@ export async function refreshAccessToken(session, config) {
 
 	if (!ok) {
 		throw new Error(
-			extractTikTokErrorMessage(payload, `TikTok token refresh failed (${status}).`),
+			extractTikTokErrorMessage(
+				payload,
+				`TikTok token refresh failed (${status}).`,
+			),
 		);
 	}
 
@@ -412,9 +418,12 @@ export async function revokeAccessToken(accessToken, config) {
 }
 
 export async function fetchBasicUserInfo(accessToken) {
-	const fields = ["open_id", "display_name", "avatar_url", "avatar_large_url"].join(
-		",",
-	);
+	const fields = [
+		"open_id",
+		"display_name",
+		"avatar_url",
+		"avatar_large_url",
+	].join(",");
 
 	const { ok, payload, status } = await requestTikTokJson(
 		`https://open.tiktokapis.com/v2/user/info/?fields=${encodeURIComponent(fields)}`,
@@ -427,7 +436,10 @@ export async function fetchBasicUserInfo(accessToken) {
 
 	if (!ok || payload?.error?.code !== "ok") {
 		throw new Error(
-			extractTikTokErrorMessage(payload, `TikTok user info request failed (${status}).`),
+			extractTikTokErrorMessage(
+				payload,
+				`TikTok user info request failed (${status}).`,
+			),
 		);
 	}
 
@@ -522,7 +534,9 @@ export async function getAuthenticatedSession(req, res, options = {}) {
 
 	if (
 		options.requiredScopes &&
-		!options.requiredScopes.every((scope) => session.grantedScopes.includes(scope))
+		!options.requiredScopes.every((scope) =>
+			session.grantedScopes.includes(scope),
+		)
 	) {
 		sendJson(res, 403, {
 			ok: false,
@@ -614,7 +628,10 @@ export function normalizeMimeType(mimeType) {
 	return normalized;
 }
 
-export async function initInboxUpload(accessToken, { videoSize, chunkSize, totalChunkCount }) {
+export async function initInboxUpload(
+	accessToken,
+	{ videoSize, chunkSize, totalChunkCount },
+) {
 	const { ok, payload, status } = await requestTikTokJson(
 		"https://open.tiktokapis.com/v2/post/publish/inbox/video/init/",
 		{
@@ -636,7 +653,10 @@ export async function initInboxUpload(accessToken, { videoSize, chunkSize, total
 
 	if (!ok || payload?.error?.code !== "ok") {
 		throw new Error(
-			extractTikTokErrorMessage(payload, `TikTok upload init failed (${status}).`),
+			extractTikTokErrorMessage(
+				payload,
+				`TikTok upload init failed (${status}).`,
+			),
 		);
 	}
 

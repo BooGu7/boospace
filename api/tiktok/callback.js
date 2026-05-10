@@ -55,7 +55,10 @@ export default async function handler(req, res) {
 	const code = query.get("code");
 
 	if (!code) {
-		redirect(res, withLoginError(returnTo, "TikTok did not return an auth code."));
+		redirect(
+			res,
+			withLoginError(returnTo, "TikTok did not return an auth code."),
+		);
 		return;
 	}
 

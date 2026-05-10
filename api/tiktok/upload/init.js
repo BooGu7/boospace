@@ -28,7 +28,8 @@ export default async function handler(req, res) {
 	try {
 		const body = await readJsonBody(req);
 		const fileSize = Number(body.fileSize || 0);
-		const fileName = typeof body.fileName === "string" ? body.fileName : "video";
+		const fileName =
+			typeof body.fileName === "string" ? body.fileName : "video";
 		const mimeType = normalizeMimeType(body.mimeType);
 		const chunkPlan = createChunkPlan(fileSize);
 		const uploadData = await initInboxUpload(session.accessToken, {

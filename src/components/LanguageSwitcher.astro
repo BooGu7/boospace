@@ -4,6 +4,7 @@ import { i18n } from "@i18n/translation";
 import { getTranslatedPostSlug } from "@utils/content-utils";
 import {
 	getLocaleFromPathname,
+	normalizePathname,
 	type SiteLocale,
 	stripLocaleFromPathname,
 	withLocale,
@@ -19,17 +20,21 @@ const { variant = "desktop" } = Astro.props;
 const locale = Astro.props.locale || getLocaleFromPathname(Astro.url.pathname);
 const pathname = Astro.url.pathname;
 const strippedPath = stripLocaleFromPathname(pathname);
+/** Same route whether user landed on `/archive` or `/archive/`; keeps `?tag=` / `?category=` when switching VI ↔ EN. */
+const strippedNormalized = normalizePathname(strippedPath);
 
 async function resolveLocaleHref(targetLocale: SiteLocale) {
 	if (targetLocale === locale) {
 		return Astro.url.pathname + Astro.url.search;
 	}
 
-	if (strippedPath.startsWith("/posts/")) {
-		const slug = strippedPath.replace(/^\/posts\/|\/$/g, "");
+	const querySuffix = Astro.url.search || "";
+
+	if (strippedNormalized.startsWith("/posts/")) {
+		const slug = strippedNormalized.replace(/^\/posts\/|\/$/g, "");
 		const translatedSlug = await getTranslatedPostSlug(slug, targetLocale);
 		if (!translatedSlug) {
-			return withLocale("/archive/", targetLocale);
+			return `${withLocale("/archive/", targetLocale)}${querySuffix}`;
 		}
 		return getPostUrlBySlug(translatedSlug, targetLocale);
 	}
@@ -41,11 +46,11 @@ async function resolveLocaleHref(targetLocale: SiteLocale) {
 		"/privacy-policy/",
 		"/terms-of-service/",
 		"/login/",
+		"/privacypolicy/",
 	]);
 
-	if (staticPageMap.has(strippedPath)) {
-		const suffix = Astro.url.search || "";
-		return `${withLocale(strippedPath, targetLocale)}${suffix}`;
+	if (staticPageMap.has(strippedNormalized)) {
+		return `${withLocale(strippedNormalized, targetLocale)}${querySuffix}`;
 	}
 
 	return withLocale("/", targetLocale);

@@ -18,8 +18,8 @@ const locale = getLocaleFromPathname(Astro.url.pathname);
         &copy; <span id="copyright-year">{currentYear}</span> {profileConfig.name}. {i18n(locale, I18nKey.allRightsReserved)} /
         <a class="transition link text-[var(--primary)] font-medium" href={url("/privacy-policy/", locale)}>{i18n(locale, I18nKey.privacyPolicy)}</a> /
         <a class="transition link text-[var(--primary)] font-medium" href={url("/terms-of-service/", locale)}>{i18n(locale, I18nKey.termsOfService)}</a> /
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('rss.xml')}>RSS</a> /
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('sitemap-index.xml')}>{i18n(locale, I18nKey.sitemap)}</a><br>
+        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="/rss.xml">RSS</a> /
+        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="/sitemap-index.xml">{i18n(locale, I18nKey.sitemap)}</a><br>
         <!-- Powered by -->
         <!-- <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://astro.build">Astro</a> & -->
     </div>

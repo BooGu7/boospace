@@ -42,6 +42,18 @@ export function normalizePathname(pathname: string): string {
 	if (!pathname) return "/";
 	let normalized = pathname.startsWith("/") ? pathname : `/${pathname}`;
 	normalized = normalized.replace(/\/+/g, "/");
+
+	// Never append "/" after `?` — it would turn into `?tag=foo/` and break filters.
+	const qIndex = normalized.indexOf("?");
+	if (qIndex !== -1) {
+		let pathOnly = normalized.slice(0, qIndex);
+		const queryOnly = normalized.slice(qIndex);
+		if (pathOnly !== "/" && pathOnly !== "" && !pathOnly.endsWith("/")) {
+			pathOnly += "/";
+		}
+		return `${pathOnly}${queryOnly}`;
+	}
+
 	if (normalized !== "/" && !normalized.endsWith("/")) {
 		normalized += "/";
 	}

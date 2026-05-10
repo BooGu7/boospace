@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { getCanonicalSlug } from "@utils/content-utils";
 import { getLocaleFromPathname } from "@utils/locale-utils";
 import { getPostUrlBySlug } from "@utils/url-utils";
 import EmptyLocaleState from "./EmptyLocaleState.astro";
@@ -21,7 +22,7 @@ const interval = 50;
                 category={entry.data.category}
                 published={entry.data.published}
                 updated={entry.data.updated}
-                url={getPostUrlBySlug(entry.slug, locale)}
+                url={getPostUrlBySlug(getCanonicalSlug(entry), locale)}
                 image={entry.data.image}
                 description={entry.data.description}
                 draft={entry.data.draft}

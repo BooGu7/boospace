@@ -7,13 +7,25 @@ import type { SiteLocale } from "../utils/locale-utils";
 import { getPostUrlBySlug } from "../utils/url-utils";
 
 export let locale: SiteLocale;
-export let tags: string[];
-export let categories: string[];
 export let sortedPosts: Post[] = [];
 
+function stripTrailingSlashesFromFilter(s: string): string {
+	let decoded = s;
+	try {
+		decoded = decodeURIComponent(s);
+	} catch {
+		decoded = s;
+	}
+	return decoded.replace(/\/+$/, "").trim();
+}
+
 const params = new URLSearchParams(window.location.search);
-tags = params.has("tag") ? params.getAll("tag") : [];
-categories = params.has("category") ? params.getAll("category") : [];
+const filterTags = params.has("tag")
+	? params.getAll("tag").map(stripTrailingSlashesFromFilter)
+	: [];
+const filterCategories = params.has("category")
+	? params.getAll("category").map(stripTrailingSlashesFromFilter)
+	: [];
 const uncategorized = params.get("uncategorized");
 
 interface Post {
@@ -46,17 +58,19 @@ function formatTag(tagList: string[]) {
 onMount(async () => {
 	let filteredPosts: Post[] = sortedPosts;
 
-	if (tags.length > 0) {
+	if (filterTags.length > 0) {
 		filteredPosts = filteredPosts.filter(
 			(post) =>
 				Array.isArray(post.data.tags) &&
-				post.data.tags.some((tag) => tags.includes(tag)),
+				post.data.tags.some((tag) => filterTags.includes(tag)),
 		);
 	}
 
-	if (categories.length > 0) {
+	if (filterCategories.length > 0) {
 		filteredPosts = filteredPosts.filter(
-			(post) => post.data.category && categories.includes(post.data.category),
+			(post) =>
+				post.data.category &&
+				filterCategories.includes(post.data.category),
 		);
 	}
 

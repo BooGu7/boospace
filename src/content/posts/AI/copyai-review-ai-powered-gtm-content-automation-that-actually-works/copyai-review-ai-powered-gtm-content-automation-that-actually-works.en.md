@@ -1,10 +1,11 @@
 ---
 title: "Copy.ai Review: AI-Powered GTM & Content Automation That Actually Works"
 published: 2024-05-10
-slug: "ai/copy-ai-review"
+slug: "ai/copy-ai-review-en"
+pathSlug: "ai/copy-ai-review"
+translationKey: "copy-ai-review"
 lang: en
 description: "Copy.ai review: How this AI-powered GTM platform automates sales outreach, content creation, and marketing workflows—plus real workflow examples and pricing breakdown."
-image: ./copyai-banner.png
 tags:
   - ai-tools
   - productivity

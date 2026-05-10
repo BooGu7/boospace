@@ -5,7 +5,10 @@ import { getCategoryUrl } from "@utils/url-utils.ts";
 import { getEntryLocale, getEntryTranslationKey } from "./content-naming";
 import { DEFAULT_LOCALE, type SiteLocale } from "./locale-utils";
 
-function getCanonicalSlug(entry: CollectionEntry<"posts">): string {
+/** URL segment(s) for links and routes; prefers `pathSlug` when set (paired translations share one path). */
+export function getCanonicalSlug(entry: CollectionEntry<"posts">): string {
+	const pathSlug = entry.data.pathSlug?.trim();
+	if (pathSlug) return pathSlug;
 	return entry.data.slug?.trim() ? entry.data.slug.trim() : entry.slug;
 }
 
@@ -139,7 +142,10 @@ export async function getTranslatedPostSlug(
 	targetLocale: SiteLocale,
 ): Promise<string | null> {
 	const allBlogPosts = await getCollection("posts");
-	const currentEntry = allBlogPosts.find((entry) => entry.slug === slug);
+	const currentEntry = allBlogPosts.find(
+		(entry) =>
+			getCanonicalSlug(entry) === slug || entry.slug === slug,
+	);
 
 	if (!currentEntry) {
 		return null;
@@ -148,7 +154,7 @@ export async function getTranslatedPostSlug(
 
 	const translatedEntry = allBlogPosts.find(
 		(entry) =>
-			entry.slug !== slug &&
+			entry.id !== currentEntry.id &&
 			getEntryTranslationKey(entry) === translationKey &&
 			getEntryLocale(entry) === targetLocale,
 	);

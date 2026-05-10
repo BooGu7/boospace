@@ -53,6 +53,15 @@ export function getDir(path: string): string {
 	return path.substring(0, lastSlashIndex + 1);
 }
 
+/** True for http(s) URLs; these must not be passed through {@link withLocale}/{@link joinUrl}. */
+export function isAbsoluteHttpUrl(path: string): boolean {
+	return /^https?:\/\//i.test(path.trim());
+}
+
 export function url(path: string, locale: SiteLocale = DEFAULT_LOCALE) {
+	const trimmed = path.trim();
+	if (isAbsoluteHttpUrl(trimmed)) {
+		return trimmed;
+	}
 	return joinUrl("", import.meta.env.BASE_URL, withLocale(path, locale));
 }

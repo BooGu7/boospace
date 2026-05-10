@@ -1,10 +1,11 @@
 ---
 title: "Đánh giá Copy.ai: Nền tảng GTM và tự động hóa nội dung bằng AI thực sự hiệu quả"
 published: 2024-05-10
-slug: "ai/copy-ai-review"
+slug: "ai/copy-ai-review-vi"
+pathSlug: "ai/copy-ai-review"
+translationKey: "copy-ai-review"
 lang: vi
 description: "Đánh giá Copy.ai: Cách nền tảng GTM được hỗ trợ bởi AI tự động hóa tiếp cận bán hàng, tạo nội dung và quy trình tiếp thị—kèm theo ví dụ thực tế về quy trình làm việc và phân tích chi phí."
-image: ./copyai-banner.png
 tags:
   - ai-tools
   - productivity
