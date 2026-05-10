@@ -69,8 +69,7 @@ onMount(async () => {
 	if (filterCategories.length > 0) {
 		filteredPosts = filteredPosts.filter(
 			(post) =>
-				post.data.category &&
-				filterCategories.includes(post.data.category),
+				post.data.category && filterCategories.includes(post.data.category),
 		);
 	}
 

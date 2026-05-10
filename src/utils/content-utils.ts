@@ -143,8 +143,7 @@ export async function getTranslatedPostSlug(
 ): Promise<string | null> {
 	const allBlogPosts = await getCollection("posts");
 	const currentEntry = allBlogPosts.find(
-		(entry) =>
-			getCanonicalSlug(entry) === slug || entry.slug === slug,
+		(entry) => getCanonicalSlug(entry) === slug || entry.slug === slug,
 	);
 
 	if (!currentEntry) {

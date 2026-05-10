@@ -1,7 +1,4 @@
-import {
-	getAllPublicPaths,
-	toAbsoluteSiteUrls,
-} from "@utils/site-urls";
+import { getAllPublicPaths, toAbsoluteSiteUrls } from "@utils/site-urls";
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async ({ site }) => {
