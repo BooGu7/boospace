@@ -3,7 +3,9 @@ title: "Đánh giá Reclaim AI: Ứng dụng lịch AI thực sự hiệu quả 
 
 published: 2024-05-10
 
-slug: "AI/reclaim-ai-review-the-ai-calendar-that-actually-works-2024"
+slug: "AI/danh-gia-reclaim-ai-ung-dung-lich-ai-thuc-su-hieu-qua-2024"
+
+translationKey: "reclaim-ai-review-the-ai-calendar-that-actually-works-2024"
 
 lang: vi
 

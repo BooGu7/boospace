@@ -7,6 +7,8 @@ slug: "AI/reclaim-ai-review-the-ai-calendar-that-actually-works-2024"
 
 lang: en
 
+translationKey: "reclaim-ai-review-the-ai-calendar-that-actually-works-2024"
+
 description: "Reclaim AI review: How this AI calendar automates scheduling, protects focus time, and integrates with your workflow—without the chaos."
 
 image: ./reclaim-ai-review-banner.png
