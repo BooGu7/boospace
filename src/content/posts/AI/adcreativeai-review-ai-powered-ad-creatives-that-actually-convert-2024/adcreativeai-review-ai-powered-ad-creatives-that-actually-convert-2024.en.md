@@ -3,7 +3,7 @@ title: "AdCreative.ai Review: AI-Powered Ad Creatives That Actually Convert (202
 
 published: 2024-05-15
 
-slug: "AI/adcreative-ai-review-ai-powered-ad-creatives-that-actually-convert-2024"
+slug: "AI/adcreativeai-review-ai-powered-ad-creatives-that-actually-convert-2024"
 
 lang: en
 
