@@ -30,6 +30,27 @@ export function inferTranslationKeyFromId(id: string): string {
 	return normalized.replace(LOCALE_SUFFIX_PATTERN, "");
 }
 
+/**
+ * Slug for post URLs from the content file path (under `src/content/posts/`).
+ * Strips locale suffix from the filename; if the layout is `.../dirname/dirname(.en|.vi).md`,
+ * the last segment is omitted so the URL is not duplicated.
+ */
+export function getPostPathSlugFromId(id: string): string {
+	const withoutLocale = inferTranslationKeyFromId(id)
+		.replace(/\\/g, "/")
+		.trim();
+	if (!withoutLocale) return "";
+	const parts = withoutLocale.split("/").filter(Boolean);
+	if (parts.length >= 2) {
+		const leaf = parts[parts.length - 1];
+		const parent = parts[parts.length - 2];
+		if (leaf === parent) {
+			return parts.slice(0, -1).join("/");
+		}
+	}
+	return withoutLocale;
+}
+
 export function getEntryLocale(
 	entry: Pick<CollectionEntry<"posts">, "id" | "data">,
 ): SiteLocale {

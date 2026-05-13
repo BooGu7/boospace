@@ -14,6 +14,7 @@ const postsCollection = defineCollection({
 		translationKey: z.string().optional().default(""),
 		/** Public URL path segment(s); use when `slug` must be unique per file (e.g. translations). */
 		pathSlug: z.string().optional().default(""),
+		/** Optional URL override. If omitted, the public path is derived from the file path under `src/content/posts/` (see getCanonicalSlug). */
 		slug: z.string().optional(),
 
 		/* For internal use */

@@ -2,14 +2,28 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { getCategoryUrl } from "@utils/url-utils.ts";
-import { getEntryLocale, getEntryTranslationKey } from "./content-naming";
+import {
+	getEntryLocale,
+	getEntryTranslationKey,
+	getPostPathSlugFromId,
+} from "./content-naming";
 import { DEFAULT_LOCALE, type SiteLocale } from "./locale-utils";
 
-/** URL segment(s) for links and routes; prefers `pathSlug` when set (paired translations share one path). */
+/**
+ * URL segment(s) for links and routes.
+ * 1. `pathSlug` — buộc URL cố định (ví dụ hai ngôn ngữ dùng chung một đường dẫn).
+ * 2. Đường dẫn từ file (`entry.id`) qua {@link getPostPathSlugFromId}; không phụ thuộc frontmatter `slug`.
+ * 3. `slug` trong frontmatter — ghi đè khi cần URL khác hẳn đường dẫn file (legacy).
+ * 4. `entry.slug` — dự phòng theo Astro.
+ */
 export function getCanonicalSlug(entry: CollectionEntry<"posts">): string {
 	const pathSlug = entry.data.pathSlug?.trim();
 	if (pathSlug) return pathSlug;
-	return entry.data.slug?.trim() ? entry.data.slug.trim() : entry.slug;
+	const fromFile = getPostPathSlugFromId(entry.id).trim();
+	if (fromFile) return fromFile;
+	const dataSlug = entry.data.slug?.trim();
+	if (dataSlug) return dataSlug;
+	return entry.slug?.trim() ?? "";
 }
 
 // // Retrieve posts and sort them by publication date
@@ -143,7 +157,10 @@ export async function getTranslatedPostSlug(
 ): Promise<string | null> {
 	const allBlogPosts = await getCollection("posts");
 	const currentEntry = allBlogPosts.find(
-		(entry) => getCanonicalSlug(entry) === slug || entry.slug === slug,
+		(entry) =>
+			getCanonicalSlug(entry) === slug ||
+			entry.slug === slug ||
+			entry.data.slug?.trim() === slug,
 	);
 
 	if (!currentEntry) {
