@@ -13,7 +13,7 @@ interface Props {
 import { Image } from "astro:assets";
 import { url } from "../../utils/url-utils";
 
-const { id, src, alt, position = "center", basePath = "/" } = Astro.props;
+const { id, src, alt, position = "center", basePath = "" } = Astro.props;
 const className = Astro.props.class;
 
 const isLocal = !(
@@ -24,6 +24,11 @@ const isLocal = !(
 );
 const isPublic = src.startsWith("/");
 
+const safeBase =
+	basePath === "/" || basePath === undefined || basePath === null
+		? ""
+		: basePath;
+
 // TODO temporary workaround for images dynamic import
 // https://github.com/withastro/astro/issues/3373
 // biome-ignore lint/suspicious/noImplicitAnyLet: <check later>
@@ -33,14 +38,19 @@ if (isLocal) {
 		import: "default",
 	});
 	let normalizedPath = path
-		.normalize(path.join("../../", basePath, src))
+		.normalize(path.join("../../", safeBase, src))
 		.replace(/\\/g, "/");
-	const file = files[normalizedPath];
+	const fallbackPath = path
+		.normalize(path.join("../../", "assets/images/banner_default.png"))
+		.replace(/\\/g, "/");
+	let file = files[normalizedPath];
 	if (!file) {
 		console.error(
 			`\n[ERROR] Image file not found: ${normalizedPath.replace("../../", "src/")}`,
 		);
-	} else {
+		file = files[fallbackPath];
+	}
+	if (file) {
 		img = await file();
 	}
 }
