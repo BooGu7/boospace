@@ -1,5 +1,6 @@
 import svelte from "@astrojs/svelte";
 import tailwind from "@astrojs/tailwind";
+import vercel from "@astrojs/vercel";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import swup from "@swup/astro";
@@ -27,6 +28,8 @@ import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 export default defineConfig({
 	site: "https://boospace.tech/",
 	base: "/",
+	output: "server",
+	adapter: vercel(),
 	trailingSlash: "always",
 	integrations: [
 		tailwind({

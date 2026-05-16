@@ -6,6 +6,7 @@ import "@fontsource/roboto/700.css";
 import ConfigCarrier from "@components/ConfigCarrier.astro";
 import { getSiteSubtitle } from "@i18n/site-copy";
 import { profileConfig, siteConfig } from "@/config";
+import { resolveSiteAssetOgImageUrl } from "../utils/og-image";
 import {
 	AUTO_MODE,
 	BANNER_HEIGHT,
@@ -39,6 +40,10 @@ interface Props {
 	setOGTypeArticle?: boolean;
 	canonicalPath?: string;
 	alternates?: Partial<Record<SiteLocale, string>>;
+	/** Open Graph / Twitter image (absolute URL). */
+	ogImage?: string;
+	/** Prefer raw article title for `og:title` (e.g. without site suffix). */
+	socialTitle?: string;
 }
 
 let {
@@ -49,6 +54,8 @@ let {
 	setOGTypeArticle,
 	canonicalPath,
 	alternates,
+	ogImage,
+	socialTitle,
 } = Astro.props;
 const locale = getLocaleFromPathname(Astro.url.pathname);
 
@@ -75,6 +82,7 @@ if (title) {
 } else {
 	pageTitle = `${siteConfig.title} - ${getSiteSubtitle(locale)}`;
 }
+const ogTitle = socialTitle?.trim() ? socialTitle.trim() : pageTitle;
 
 const favicons: Favicon[] =
 	siteConfig.favicon.length > 0 ? siteConfig.favicon : defaultFavicons;
@@ -106,6 +114,13 @@ const bannerOffsetByPosition = {
 };
 const bannerOffset =
 	bannerOffsetByPosition[siteConfig.banner.position || "center"];
+
+let resolvedOgImage = ogImage;
+if (!resolvedOgImage && Astro.site) {
+	resolvedOgImage =
+		(await resolveSiteAssetOgImageUrl(Astro.site, siteConfig.banner.src)) ??
+		undefined;
+}
 
 // Inject Vercel scripts for Astro
 inject();
@@ -204,8 +219,9 @@ injectSpeedInsights();
 
 		<meta property="og:site_name" content={siteConfig.title}>
 		<meta property="og:url" content={Astro.url}>
-		<meta property="og:title" content={pageTitle}>
+		<meta property="og:title" content={ogTitle}>
 		<meta property="og:description" content={description || pageTitle}>
+		{resolvedOgImage && <meta property="og:image" content={resolvedOgImage} />}
 		{setOGTypeArticle ? (
         <meta property="og:type" content="article" />
         ) : (
@@ -214,8 +230,9 @@ injectSpeedInsights();
 
 		<meta name="twitter:card" content="summary_large_image">
 		<meta property="twitter:url" content={Astro.url}>
-		<meta name="twitter:title" content={pageTitle}>
+		<meta name="twitter:title" content={ogTitle}>
 		<meta name="twitter:description" content={description || pageTitle}>
+		{resolvedOgImage && <meta name="twitter:image" content={resolvedOgImage} />}
 
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
@@ -266,7 +283,7 @@ injectSpeedInsights();
 		<link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={`${Astro.site}rss.xml`}/>
 
 	</head>
-	<body class=" min-h-screen transition " class:list={[{"lg:is-home": isHomePage, "enable-banner": enableBanner}]}
+	<body class=" min-h-screen transition " class:list={[{"is-home": isHomePage, "enable-banner": enableBanner}]}
 		  data-overlayscrollbars-initialize
 	>
 		{/* Google Tag Manager (noscript) */}
@@ -492,10 +509,10 @@ function showBanner() {
 
 function init() {
 	// disableAnimation()()		// TODO
+	showBanner();
 	loadTheme();
 	loadHue();
 	initCustomScrollbar();
-	showBanner();
 }
 
 /* Load settings when entering the site */
@@ -524,7 +541,7 @@ const setup = () => {
 		}
 		let threshold = window.innerHeight * (BANNER_HEIGHT / 100) - 72 - 16
 		let navbar = document.getElementById('navbar-wrapper')
-		if (!navbar || !document.body.classList.contains('lg:is-home')) {
+		if (!navbar || !document.body.classList.contains('is-home')) {
 			return
 		}
 		if (document.body.scrollTop >= threshold || document.documentElement.scrollTop >= threshold) {
@@ -536,9 +553,9 @@ const setup = () => {
 		// change banner height immediately when a link is clicked
 		const bodyElement = document.querySelector('body')
 		if (stripLocaleFromPathname(new URL(visit.to.url, window.location.origin).pathname) === '/') {
-			bodyElement!.classList.add('lg:is-home');
+			bodyElement!.classList.add('is-home');
 		} else {
-			bodyElement!.classList.remove('lg:is-home');
+			bodyElement!.classList.remove('is-home');
 		}
 
 		// increase the page height during page transition to prevent the scrolling animation from jumping
@@ -609,7 +626,7 @@ function scrollFunction() {
 		const MAIN_PANEL_EXCESS_HEIGHT = MAIN_PANEL_OVERLAPS_BANNER_HEIGHT * 16			// The height the main panel overlaps the banner
 
 		let bannerHeight = BANNER_HEIGHT
-		if (document.body.classList.contains('lg:is-home') && window.innerWidth >= 1024) {
+		if (document.body.classList.contains('is-home') && window.innerWidth >= 1024) {
 			bannerHeight = BANNER_HEIGHT_HOME
 		}
 		let threshold = window.innerHeight * (bannerHeight / 100) - NAVBAR_HEIGHT - MAIN_PANEL_EXCESS_HEIGHT - 16

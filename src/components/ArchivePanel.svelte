@@ -3,6 +3,7 @@ import { onMount } from "svelte";
 
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
+import { formatDateToYYYYMMDD, getCalendarYear } from "../utils/date-utils";
 import type { SiteLocale } from "../utils/locale-utils";
 import { getPostUrlBySlug } from "../utils/url-utils";
 
@@ -45,12 +46,6 @@ interface Group {
 
 let groups: Group[] = [];
 
-function formatDate(date: Date) {
-	const month = (date.getMonth() + 1).toString().padStart(2, "0");
-	const day = date.getDate().toString().padStart(2, "0");
-	return `${month}-${day}`;
-}
-
 function formatTag(tagList: string[]) {
 	return tagList.map((t) => `#${t}`).join(" ");
 }
@@ -79,7 +74,7 @@ onMount(async () => {
 
 	const grouped = filteredPosts.reduce(
 		(acc, post) => {
-			const year = post.data.published.getFullYear();
+			const year = getCalendarYear(post.data.published);
 			if (!acc[year]) {
 				acc[year] = [];
 			}
@@ -133,7 +128,7 @@ onMount(async () => {
                     <div class="flex flex-row justify-start items-center h-full">
                         <!-- date -->
                         <div class="w-[15%] md:w-[10%] transition text-sm text-right text-50">
-                            {formatDate(post.data.published)}
+                            {formatDateToYYYYMMDD(post.data.published)}
                         </div>
 
                         <!-- dot and line -->
