@@ -1,3 +1,5 @@
+export const prerender = true;
+
 import { getAllPublicPaths, toAbsoluteSiteUrls } from "@utils/site-urls";
 import type { APIRoute } from "astro";
 

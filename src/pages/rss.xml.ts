@@ -1,3 +1,5 @@
+export const prerender = true;
+
 import { getRssResponse } from "@utils/rss-response";
 import type { APIContext } from "astro";
 
