@@ -26,6 +26,8 @@ interface Props {
 	headings?: MarkdownHeading[];
 	canonicalPath?: string;
 	alternates?: Partial<Record<SiteLocale, string>>;
+	ogImage?: string;
+	socialTitle?: string;
 }
 
 const {
@@ -37,6 +39,8 @@ const {
 	headings = [],
 	canonicalPath,
 	alternates,
+	ogImage,
+	socialTitle,
 } = Astro.props;
 const hasBannerCredit =
 	siteConfig.banner.enable && siteConfig.banner.credit.enable;
@@ -48,7 +52,7 @@ const mainPanelTop = siteConfig.banner.enable
 	: "5.5rem";
 ---
 
-<Layout title={title} banner={banner} description={description} lang={lang} setOGTypeArticle={setOGTypeArticle} canonicalPath={canonicalPath} alternates={alternates}>
+<Layout title={title} banner={banner} description={description} lang={lang} setOGTypeArticle={setOGTypeArticle} canonicalPath={canonicalPath} alternates={alternates} ogImage={ogImage} socialTitle={socialTitle}>
 
 <!-- Navbar -->
 <slot slot="head" name="head"></slot>

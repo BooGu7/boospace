@@ -1,4 +1,5 @@
 ---
+import { LOCALE_COOKIE } from "../constants/locale-preference";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { getTranslatedPostSlug } from "@utils/content-utils";
@@ -74,6 +75,7 @@ const pillClass =
 >
 	<a
 		href={viHref}
+		data-boospace-locale="vi"
 		class:list={[
 			"rounded-xl px-3.5 h-9 inline-flex items-center justify-center text-sm font-semibold tracking-[0.08em] transition active:scale-95",
 			locale === "vi"
@@ -86,6 +88,7 @@ const pillClass =
 	</a>
 	<a
 		href={enHref}
+		data-boospace-locale="en"
 		class:list={[
 			"rounded-xl px-3.5 h-9 inline-flex items-center justify-center text-sm font-semibold tracking-[0.08em] transition active:scale-95",
 			locale === "en"
@@ -97,3 +100,18 @@ const pillClass =
 		{i18n(locale, I18nKey.languageEnglish)}
 	</a>
 </div>
+
+<script is:inline define:vars={{ cookieName: LOCALE_COOKIE }}>
+	(function () {
+		const maxAge = 60 * 60 * 24 * 365;
+		const secure = typeof window !== "undefined" && window.location.protocol === "https:";
+		const suffix = "; Path=/; Max-Age=" + maxAge + "; SameSite=Lax" + (secure ? "; Secure" : "");
+		document.querySelectorAll("[data-boospace-locale]").forEach(function (el) {
+			el.addEventListener("click", function () {
+				const v = el.getAttribute("data-boospace-locale");
+				if (v !== "vi" && v !== "en") return;
+				document.cookie = cookieName + "=" + v + suffix;
+			});
+		});
+	})();
+</script>

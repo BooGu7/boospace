@@ -14,6 +14,8 @@ interface Props {
 	category: string | null;
 	hideTagsForMobile?: boolean;
 	hideUpdateDate?: boolean;
+	/** If set, only this many tags are shown; remainder as +N. */
+	maxTags?: number;
 }
 const {
 	published,
@@ -22,9 +24,16 @@ const {
 	category,
 	hideTagsForMobile = false,
 	hideUpdateDate = false,
+	maxTags,
 } = Astro.props;
 const className = Astro.props.class;
 const locale = getLocaleFromPathname(Astro.url.pathname);
+
+const tagList = Array.isArray(tags) ? tags : [];
+const visibleTags =
+	typeof maxTags === "number" && maxTags > 0 ? tagList.slice(0, maxTags) : tagList;
+const tagOverflow =
+	typeof maxTags === "number" && maxTags > 0 ? Math.max(0, tagList.length - maxTags) : 0;
 ---
 
 <div class:list={["flex flex-wrap text-neutral-500 dark:text-neutral-400 items-center gap-4 gap-x-4 gap-y-2", className]}>
@@ -69,16 +78,19 @@ const locale = getLocaleFromPathname(Astro.url.pathname);
         >
             <Icon name="material-symbols:tag-rounded" class="text-xl"></Icon>
         </div>
-        <div class="flex flex-row flex-nowrap items-center">
-            {(tags && tags.length > 0) && tags.map((tag, i) => (
-                <div class:list={[{"hidden": i == 0}, "mx-1.5 text-[var(--meta-divider)] text-sm"]}>/</div>
+        <div class="flex flex-row flex-nowrap items-center min-w-0">
+            {visibleTags.length > 0 && visibleTags.map((tag, i) => (
+                <div class:list={[{"hidden": i == 0}, "mx-1.5 text-[var(--meta-divider)] text-sm flex-shrink-0"]}>/</div>
                 <a href={getTagUrl(tag, locale)} aria-label={`View all posts with the ${tag.trim()} tag`}
                    class="link-lg transition text-50 text-sm font-medium
-                                hover:text-[var(--primary)] dark:hover:text-[var(--primary)] whitespace-nowrap">
+                                hover:text-[var(--primary)] dark:hover:text-[var(--primary)] whitespace-nowrap flex-shrink-0">
                     {tag.trim()}
                 </a>
             ))}
-            {!(tags && tags.length > 0) && <div class="transition text-50 text-sm font-medium">{i18n(locale, I18nKey.noTags)}</div>}
+            {tagOverflow > 0 && (
+                <span class="text-50 text-sm font-medium ml-1.5 flex-shrink-0" title={tagList.slice(maxTags ?? 0).join(", ")}>+{tagOverflow}</span>
+            )}
+            {visibleTags.length === 0 && <div class="transition text-50 text-sm font-medium">{i18n(locale, I18nKey.noTags)}</div>}
         </div>
     </div>
 </div>
