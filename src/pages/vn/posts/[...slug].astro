@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import path from "node:path";
 import License from "@components/misc/License.astro";
 import Markdown from "@components/misc/Markdown.astro";
@@ -13,6 +14,7 @@ import {
 } from "@utils/content-utils";
 import type { SiteLocale } from "@utils/locale-utils";
 import { getDir, getPostUrlBySlug } from "@utils/url-utils";
+import { resolvePostOgImageUrl } from "@utils/og-image";
 import { Icon } from "astro-icon/components";
 import { licenseConfig } from "@/config";
 import ImageWrapper from "../../../components/misc/ImageWrapper.astro";
@@ -40,6 +42,12 @@ const { remarkPluginFrontmatter } = await entry.render();
 const hasCustomCover =
 	typeof entry.data.image === "string" && entry.data.image.trim() !== "";
 const fallbackCoverImage = "assets/images/banner_default.png";
+const postAssetBase = path.join("content/posts/", getDir(entry.id));
+const ogImage = await resolvePostOgImageUrl(
+	Astro.site,
+	hasCustomCover ? entry.data.image : undefined,
+	postAssetBase,
+);
 
 const jsonLd = {
 	"@context": "https://schema.org",
@@ -53,6 +61,10 @@ const jsonLd = {
 		url: Astro.site,
 	},
 	datePublished: formatDateToYYYYMMDD(entry.data.published),
+	...(entry.data.updated &&
+	entry.data.updated.getTime() !== entry.data.published.getTime()
+		? { dateModified: formatDateToYYYYMMDD(entry.data.updated) }
+		: {}),
 	inLanguage: getEntryLocale(entry).replace("_", "-"),
 	// TODO include cover image here
 };
@@ -72,6 +84,8 @@ if (translatedSlug) {
 	setOGTypeArticle={true}
 	headings={headings}
 	alternates={alternates}
+	ogImage={ogImage}
+	socialTitle={entry.data.title}
 >
 	<script
 		is:inline

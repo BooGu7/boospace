@@ -7,7 +7,6 @@ export async function getAllPublicPaths(): Promise<string[]> {
 	const paths = new Set<string>();
 
 	const roots = [
-		"/",
 		"/about/",
 		"/archive/",
 		"/login/",
